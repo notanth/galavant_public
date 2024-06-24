@@ -1,2 +1,2 @@
 # galavant_pdm
-Anthony's travel tracking web app for PDM with Bob
+Anthony's travel wishlist tracking web app for PDM with Bob
