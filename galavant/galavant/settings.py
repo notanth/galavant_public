@@ -59,7 +59,7 @@ ROOT_URLCONF = 'galavant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["galavant/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
