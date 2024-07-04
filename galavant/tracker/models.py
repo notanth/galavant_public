@@ -1,69 +1,89 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-
-# use DateTimeField vs DateField?
-# use FloatField vs Decimal field? See Python decimal docs
-
-# intent of this table is to let users create "categories" like spring break 
-# so they can use it to group saved places/lite itinerary
+# for visualization purposes only ***
 '''
-class Trips(models.Model):
+class User(AbstractUser):
+    name = CharField(_("Name of User"), blank=True, max_length=255)
+    username = CharField(_("Username"), blank=True, max_length=255)
+    email = EmailField(_("Email"), blank=True, max_length=255)
+    password = CharField(_("Password"), blank=True, max_length=255)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
+'''
+
+
+
+class Trip(models.Model):
     trip_name = models.CharField(max_length=50)
-    username = models.ForeignKey()
-    # try Field.choices here, user to add their own then dropdown from their values?
+    #username = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.trip_name
+
+'''
+class Comment(models.Model):
+    comment_text = models.TextField()
+    place_id = models.ForeignKey(Location, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = [['traveler', 'place_id']]
+    
+    def __str__(self):
+        return self.comment_text
 '''
 
 '''
-# secondary table that allows each user to add comments and tags to place ID
-class LocationTraveler:
-    traveler =
-    place_id = models.ForeignKey()
-    been_to_before = models.BooleanField(default=False)
+class LocationProfile(models.Model):
+    #location_name = models.CharField(max_length=50, blank=False)
+    #user_id = models.ForeignKey("User", on_delete=models.CASCADE)
+    place_id = models.ForeignKey("Location", on_delete=models.CASCADE, default=1)
+    trip_id = models.ForeignKey("Trip", blank=True, on_delete=models.CASCADE)
+    been_to_before = models.BooleanField(default=False, blank=True)
+    #comment = models.ForeignKey('Comment', null=True, blank=True)
 
-
-    Meta:
-        unique together
 '''
 
+
+'''
+class Meta:
+    unique_together = [['place_id', 'trip_id']]
+
+'''
 
 
 class Location(models.Model):
-    location_name = models.CharField(max_length=50, blank=False) #this may be redundant w place_anme
-    latitude = models.DecimalField(max_digits=12, decimal_places=9) #need to find new solution to incorporate direction
-    longitude = models.DecimalField(max_digits=12, decimal_places=9) #need to find new solution to incorporate direction
-    #place_id #this is from GMaps Places API
-    #place_name # assume Maps also has this
-    date_created = models.DateTimeField(auto_now_add=True) # when place first added; for use later
-    #date_updated = models.DateField(auto_now=True) only relevant at user level
-    #been_to = models.BooleanField(default=False) # True/False, designates a place user has already been to
+    latitude = models.DecimalField(max_digits=12, decimal_places=9,
+                                   blank=False)
+    longitude = models.DecimalField(max_digits=12, decimal_places=9,
+                                    blank=False)
+    place_id = models.CharField(max_length=100, blank=False, default=1)
+    #models.CharField(max_length=100, unique=True, blank=False, default=)  #this is from GMaps Places API
+    place_name = models.CharField(max_length=100, blank=False, default='needs updated')  #Google Maps long_name
+    country = models.CharField(max_length=100, blank=False)
+    city = models.CharField(max_length=100, blank=False)
+    date_created = models.DateTimeField(auto_now_add=True)  # when place first added; for use later
+    date_updated = models.DateField(auto_now=True)  #important for process to confirm place ID annually
 
-    
+    # counts
+    # total_location_saves = models.PositiveIntegerField(default=0); possible to also do an aggregation table?
 
     def __str__(self):
-        return self.location_name #change to place_name
+        return self.place_name  #change to place long_name
 
-'''
-# alternative to extending default user class? Ability to have friends..?
-class User(models.model): PROFILE TABLE
-    # interested in SuperTokens for email only sign in option
-    # look at allauth and dj-paddle for billing; use one or both?
-'''
 
 # is User auto created? Extend default user model? Allauth directly?
-class Traveler(models.Model): # profile table
-    username = models.CharField(max_length=25, unique=True)
-    twitter_handle = models.CharField(max_length=25, unique=True) #profile table
-    #email = models.EmailField(max_length=100, unique=True)
-    #date_created =
-    #last_login = 
+class Profile(models.Model):  # profile table
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    twitter_handle = models.CharField(max_length=25, unique=True)
 
     # counts
     #places_saved
     #countries_saved
 
     #class Meta:
-        #ordering = ['-id']
+    #ordering = ['-id']
 
     def __str__(self):
         return self.username
