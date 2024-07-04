@@ -1,0 +1,8 @@
+Django~=4.2
+PyGithub
+googlemaps
+python-decouple
+datetime
+django-allauth
+pre-commit
+#supertokens

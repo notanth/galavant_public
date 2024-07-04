@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+import os
+#from dj_database_url import parse as db_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*u3@a8jat50+*vkqb++a-s6a2trkmr(t*8vp1i1y@$vsxep1z!'
+SECRET_KEY = config('MY_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tracker',
+    'decouple',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +120,32 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+
+# supposedly required for CSS (& JS?) imports ; maybe others along w STATIC ROUTE
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 STATIC_URL = 'static/'
+
+
+# supposedly required for CSS (& JS?) imports ; maybe others
+STATIC_ROOT: str = os.path.join(BASE_DIR, 'static_cdn')
+
+#per decouple docs
+#SECRET_KEY = config('SECRET_KEY')
+#DEBUG = config('DEBUG', default=False, cast=bool)
+#EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+#EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+
+#GOOGLE_API_KEY = ""
+
+#RECAPTCHA_KEY
+
+#PADDLE_KEY or other payments API
+
+#**OTHER** APIKEY = ""
+#OTHER SECRET
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

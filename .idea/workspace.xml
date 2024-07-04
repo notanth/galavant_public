@@ -4,27 +4,47 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="61660f38-54fb-4f30-b1f7-0a61b4828210" name="Changes" comment="" />
+    <list default="true" id="61660f38-54fb-4f30-b1f7-0a61b4828210" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/galavant/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/galavant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/migrations/0002_alter_location_options_alter_traveler_options_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/templates/location/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/templates/location/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/templates/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/tracker/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "notanth"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;notanth&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/notanth/galavant_pdm_anthony_canzona.git",
-    "accountId": "63e3dffa-86d7-457c-acaf-3e7d253e9bf2"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/notanth/galavant_pdm_anthony_canzona.git&quot;,
+    &quot;accountId&quot;: &quot;63e3dffa-86d7-457c-acaf-3e7d253e9bf2&quot;
   }
-}]]></component>
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -35,17 +55,66 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Django Server.galavant_pdm_anthony_canzona.executor": "Run",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "database.data.extractors.current.export.id": "Pretty-Groovy.txt.groovy",
+    "database.data.extractors.current.id": "Pretty-Groovy.txt.groovy",
+    "django.template.preview.state": "SHOW_EDITOR_AND_PREVIEW",
+    "git-widget-placeholder": "google__apis__testing",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/Change Language": [
+      "JSON Lines"
+    ],
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "JSON",
+      "PLAIN_TEXT"
+    ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/galavant/tracker/templates/location" />
+      <recent name="$PROJECT_DIR$/galavant/tracker/templates/location/templates" />
+      <recent name="$PROJECT_DIR$/galavant/tracker/templates" />
+      <recent name="$PROJECT_DIR$/galavant/tracker" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="galavant_pdm_anthony_canzona" type="Python.DjangoServer" factoryName="Django server">
+      <module name="galavant_pdm_anthony_canzona" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="galavant.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="localhost" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -66,6 +135,8 @@
       <workItem from="1719334451617" duration="431000" />
       <workItem from="1719335202105" duration="263000" />
       <workItem from="1719335497110" duration="1321000" />
+      <workItem from="1719864075670" duration="3608000" />
+      <workItem from="1719930501509" duration="27055000" />
     </task>
     <servers />
   </component>

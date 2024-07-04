@@ -3,6 +3,6 @@ from tracker import views
 
 
 urlpatterns = [
-    path('', views.location_list, name='location_list')
+    path('', views.location_list, name='location_list'),
     
 ]
