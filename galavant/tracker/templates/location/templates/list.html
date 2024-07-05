@@ -1,4 +1,4 @@
-{%  extends "location/templates/../base.html" %}
+{%  extends "base.html" %}
 
 {% block title %}Locations{% endblock %}
 
@@ -16,6 +16,8 @@
             <br>
             {{ location.longitude }}
         </div>
-    {% empty %}    
+    {% empty %}
+      <p>No locations are available.</p>
     {% endfor %}
+
 {% endblock %}
