@@ -1,0 +1,21 @@
+{%  extends "location/templates/../base.html" %}
+
+{% block title %}Locations{% endblock %}
+
+{% block content %}
+
+    <h1>Locations</h1>
+    {% for location in locations %}
+        <div class="location">
+            <a href="{% url 'location_list' %}">
+                {{ location }}
+            </a>
+            {{ location.place_name }}
+            <br>
+            {{ location.latitude }}
+            <br>
+            {{ location.longitude }}
+        </div>
+    {% empty %}    
+    {% endfor %}
+{% endblock %}
