@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('MY_SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
@@ -40,8 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tracker',
+    'django.contrib.sites',
+    # 3rd party
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    #'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.twitter',
+    #'allauth.socialaccount.providers.apple',
+
     'decouple',
+    # own
+    'tracker',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +63,31 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 3rd party
+    'allauth.account.middleware.AccountMiddleware',
 ]
+
+SITE_ID = 1
+
+
+
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+LOGIN_REDIRECT_URL = '/'
+
+'''
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    }
+}
+'''
 
 ROOT_URLCONF = 'galavant.urls'
 
@@ -67,6 +102,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -74,6 +110,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'galavant.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -123,7 +167,7 @@ USE_TZ = True
 
 # supposedly required for CSS (& JS?) imports ; maybe others along w STATIC ROUTE
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'galavant/static')
 ]
 
 STATIC_URL = 'static/'
@@ -138,7 +182,7 @@ STATIC_ROOT: str = os.path.join(BASE_DIR, 'static_cdn')
 #EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 #EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 
-#GOOGLE_API_KEY = ""
+GOOGLE_API_KEY = config('GOOGLE_API_KEY')
 
 #RECAPTCHA_KEY
 

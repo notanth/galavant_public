@@ -5,19 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61660f38-54fb-4f30-b1f7-0a61b4828210" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/galavant/static/css/base.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/galavant/templates/profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/galavant/templates/user_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/tracker/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/tracker/migrations/0006_remove_profile_username_profile_bio_profile_nickname_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/tracker/migrations/0007_profile_countries_saved_profile_places_saved.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/templates/create.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/galavant/galavant/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/galavant/galavant/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/galavant/galavant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/galavant/tracker/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/migrations/0002_alter_location_options_alter_traveler_options_and_more.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/galavant/tracker/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/templates/location/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/templates/location/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/templates/list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/galavant/tracker/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/galavant/tracker/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +32,11 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -61,13 +70,13 @@
     "database.data.extractors.current.export.id": "Pretty-Groovy.txt.groovy",
     "database.data.extractors.current.id": "Pretty-Groovy.txt.groovy",
     "django.template.preview.state": "SHOW_EDITOR_AND_PREVIEW",
-    "git-widget-placeholder": "google__apis__testing",
+    "git-widget-placeholder": "django__all__auth__main__synced",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.notifications",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -137,10 +146,22 @@
       <workItem from="1719335497110" duration="1321000" />
       <workItem from="1719864075670" duration="3608000" />
       <workItem from="1719930501509" duration="27055000" />
+      <workItem from="1720453116482" duration="18431000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

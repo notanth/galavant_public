@@ -5,8 +5,8 @@ from tracker.models import Location, Profile  #Trip #Comment #TravelerLocation
 # Register your models here.
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['username', 'twitter_handle']
-    search_field = ['username']
+    list_display = ['user', 'twitter_handle']
+    search_field = ['user']
 
 
 @admin.register(Location)

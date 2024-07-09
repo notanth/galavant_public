@@ -1,5 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Trip(models.Model):
@@ -47,15 +49,22 @@ class Comment(models.Model):
 
 # is User auto created? Extend default user model? Allauth directly?
 class Profile(models.Model):  # profile table
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length=50, blank=True)
     twitter_handle = models.CharField(max_length=25, unique=True)
-
+    bio = models.TextField(max_length=500, blank=True)
     # counts
-    #places_saved
-    #countries_saved
+    places_saved = models.PositiveIntegerField(default=0)
+    countries_saved = models.PositiveIntegerField(default=0)
 
-    #class Meta:
-    #ordering = ['-id']
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
     def __str__(self):
         return self.username
