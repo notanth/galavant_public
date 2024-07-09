@@ -1,8 +1,11 @@
 Django~=4.2
 PyGithub
-googlemaps
+#googlemaps any use to this library over django-?
+django-google-maps
 python-decouple
 datetime
 django-allauth
-pre-commit
-#supertokens
+requests
+requests-oauthlib
+python3-openid
+#pre-commit

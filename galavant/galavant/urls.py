@@ -20,9 +20,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+
+    path('accounts/', include('allauth.urls')),
+    path('', include('tracker.urls')),
     path('admin/', admin.site.urls),
-    path('', include('tracker.urls'))
 ]
 
-# static URL urlpatterns
+# static URL urlpatterns; before production, be served from elsewhere?
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
