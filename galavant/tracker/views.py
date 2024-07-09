@@ -9,17 +9,13 @@ import django_google_maps
 
 # Create your views here.
 def index(request):
-    return render(request, 'tracker/index.html')
-
-
-
-
+    return render(request, 'index.html')
 
 
 def location_list(request):
     locations = Location.objects.all()
     print(locations)
-    return render(request, 'location/templates/list.html', {'locations': locations})
+    return render(request, 'list.html', {'locations': locations})
 
 def create_location(request):
     if request.method == 'POST':
@@ -28,7 +24,7 @@ def create_location(request):
             location_name = form.cleaned_data['location_name']
     else:
         form = LocationCreateForm()
-    return render(request, 'location/templates/create.html', {'form': form})
+    return render(request, 'create.html', {'form': form})
 
 def update_profile(request, user_id):
     user = User.objects.get(pk=user_id)
