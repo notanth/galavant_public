@@ -94,7 +94,7 @@ ROOT_URLCONF = 'galavant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["galavant/templates", "galavant/templates/allauth", "galavant/templates/socialaccount"],
+        'DIRS': ["galavant/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
