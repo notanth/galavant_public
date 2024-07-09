@@ -5,23 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61660f38-54fb-4f30-b1f7-0a61b4828210" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/galavant/galavant/static/css/base.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/galavant/galavant/templates/profile.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/galavant/galavant/templates/user_detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/galavant/tracker/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/galavant/tracker/migrations/0006_remove_profile_username_profile_bio_profile_nickname_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/galavant/tracker/migrations/0007_profile_countries_saved_profile_places_saved.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/templates/create.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/galavant/tracker/templates/location/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/galavant/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/galavant/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/galavant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/galavant/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/galavant/tracker/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/galavant/tracker/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,12 +30,26 @@
     &quot;assignee&quot;: &quot;notanth&quot;
   }
 }</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
+    {
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOMNgOns50w1cd&quot;,
+        &quot;number&quot;: 22
+      },
+      &quot;lastSeen&quot;: 1720540688467
+    }
+  ]
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/notanth/galavant_pdm_anthony_canzona.git&quot;,
     &quot;accountId&quot;: &quot;63e3dffa-86d7-457c-acaf-3e7d253e9bf2&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.gitignore" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -70,13 +69,13 @@
     "database.data.extractors.current.export.id": "Pretty-Groovy.txt.groovy",
     "database.data.extractors.current.id": "Pretty-Groovy.txt.groovy",
     "django.template.preview.state": "SHOW_EDITOR_AND_PREVIEW",
-    "git-widget-placeholder": "django__all__auth__main__synced",
+    "git-widget-placeholder": "remove__extra__galavant__directory",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.notifications",
+    "settings.editor.selected.configurable": "terminal",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -146,7 +145,9 @@
       <workItem from="1719335497110" duration="1321000" />
       <workItem from="1719864075670" duration="3608000" />
       <workItem from="1719930501509" duration="27055000" />
-      <workItem from="1720453116482" duration="18431000" />
+      <workItem from="1720453116482" duration="18859000" />
+      <workItem from="1720540676091" duration="2664000" />
+      <workItem from="1720551558041" duration="1374000" />
     </task>
     <servers />
   </component>
