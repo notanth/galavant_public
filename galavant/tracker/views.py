@@ -22,13 +22,16 @@ def location_list(request):
 
 
 def create_location(request):
-    if request.method == 'POST':
+    if request.POST:
         form = LocationCreateForm(request.POST)
+        print()
         if form.is_valid():
-            place_name = form.cleaned_data['place_name']
+            #place_name = form.cleaned_data['place_name']
+            form.save()
+            form = LocationCreateForm()
     else:
         form = LocationCreateForm()
-    return render(request, 'create.html', {'form': form})
+    return render(request, 'createlocation.html', {'form': form})
 
 
 def update_profile(request, user_id):
