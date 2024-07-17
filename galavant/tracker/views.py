@@ -1,11 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from tracker.models import Location
 from tracker.forms import LocationCreateForm
-import django_google_maps
+from django.views.generic import ListView
+from django.views import View
+from datetime import datetime
+import googlemaps
 
 # Create your views here.
 def index(request):
@@ -17,20 +20,75 @@ def location_list(request):
     print(locations)
     return render(request, 'list.html', {'locations': locations})
 
+
 def create_location(request):
     if request.method == 'POST':
         form = LocationCreateForm(request.POST)
         if form.is_valid():
-            location_name = form.cleaned_data['location_name']
+            place_name = form.cleaned_data['place_name']
     else:
         form = LocationCreateForm()
     return render(request, 'create.html', {'form': form})
+
 
 def update_profile(request, user_id):
     user = User.objects.get(pk=user_id)
     user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
     user.save()
 
+
+'''
+class HomeView(ListView):
+    template_name = "tracker/home.html"
+    context_object_name = 'mydata'
+    model = Location
+    success_url = "/"
+'''
+
+class GeocodingView(View):
+    template_name = "tracker/geocoding.html"
+
+    def get(self,request,pk): 
+        location = Location.objects.get(pk=pk)
+
+        if location.longitude and location.latitude and location.place_id != None: 
+            latitude = location.latitude
+            longitude = location.longitude
+            place_id = location.place_id
+            label = "from my database"
+
+        elif location.adress and location.country and location.zipcode and location.city != None: 
+            adress_string = str(location.adress)+", "+str(location.zipcode)+", "+str(location.city)+", "+str(location.country)
+
+            gmaps = googlemaps.Client(key = settings.GOOGLE_API_KEY)
+            result = gmaps.geocode(adress_string)[0]
+            
+            latitude = result.get('geometry', {}).get('location', {}).get('latitude', None)
+            longitude = result.get('geometry', {}).get('location', {}).get('longitude', None)
+            place_id = result.get('place_id', {})
+            label = "from my api call"
+
+            location.latitude = latitude
+            location.longitude = longitude
+            location.place_id = place_id
+            location.save()
+
+        else: 
+            result = ""
+            latitude = ""
+            longitude = ""
+            place_id = ""
+            label = "no call made"
+
+        context = {
+            'location':location,
+            'latitude':latitude, 
+            'longitude':longitude, 
+            'place_id':place_id, 
+            'label': label
+        }
+        
+        return render(request, self.template_name, context)
 
 
 '''
