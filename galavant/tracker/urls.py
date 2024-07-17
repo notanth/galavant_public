@@ -8,6 +8,6 @@ urlpatterns = [
     #path("", HomeView.as_view(), name='my_home_view'),
     #path('geocoding/<int:pk>', GeocodingView.as_view(), name = 'my_geocoding_view'),
     path('locations', views.location_list, name='location_list'),
-    path('create/', views.create_location, name='create_location'),
+    path('createlocation/', views.create_location, name='create_location'),
     
 ]
