@@ -1,11 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from tracker.models import Location
 from tracker.forms import LocationCreateForm
-import django_google_maps
+from django.views.generic import ListView
+from django.views import View
+from datetime import datetime
+import googlemaps
 
 # Create your views here.
 def index(request):
@@ -17,20 +20,21 @@ def location_list(request):
     print(locations)
     return render(request, 'list.html', {'locations': locations})
 
+
 def create_location(request):
     if request.method == 'POST':
         form = LocationCreateForm(request.POST)
         if form.is_valid():
-            location_name = form.cleaned_data['location_name']
+            place_name = form.cleaned_data['place_name']
     else:
         form = LocationCreateForm()
     return render(request, 'create.html', {'form': form})
+
 
 def update_profile(request, user_id):
     user = User.objects.get(pk=user_id)
     user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
     user.save()
-
 
 
 '''

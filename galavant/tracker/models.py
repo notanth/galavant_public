@@ -22,6 +22,7 @@ class Location(models.Model):
     place_id = models.CharField(max_length=100, blank=False, default=1)
     place_name = models.CharField(max_length=100, blank=False, default='needs updated')  #Google Maps long_name
     country = models.CharField(max_length=100, blank=False)
+
     city = models.CharField(max_length=100, blank=False)
     date_created = models.DateTimeField(auto_now_add=True)  # when place first added; for use later
     date_updated = models.DateField(auto_now=True)  #important for process to confirm place ID annually
@@ -51,7 +52,7 @@ class Comment(models.Model):
 class Profile(models.Model):  # profile table
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=50, blank=True)
-    twitter_handle = models.CharField(max_length=25, unique=True)
+    twitter_handle = models.CharField(max_length=25)
     bio = models.TextField(max_length=500, blank=True)
     # counts
     places_saved = models.PositiveIntegerField(default=0)

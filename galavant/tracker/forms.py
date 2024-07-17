@@ -6,4 +6,4 @@ from tracker.models import Location
 class LocationCreateForm(forms.ModelForm):
     class Meta:
         model = Location
-        fields = ['place_name']
+        fields = '__all__'
