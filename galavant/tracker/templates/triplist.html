@@ -1,0 +1,22 @@
+{%  extends "base.html" %}
+
+{% block title %}Trips{% endblock %}
+
+{% block content %}
+
+
+    <h3>Trips</h3>
+    {% for trip in trips %}
+        <div class="trip">
+            <a href="{% url 'trip_list' %}">
+                {{ trip }}
+            </a>
+            <br>
+            {{ trip.trip_name }}
+            <br>
+     </div>
+    {% empty %}
+      <p>No trips are available.</p>
+    {% endfor %}
+
+{% endblock %}

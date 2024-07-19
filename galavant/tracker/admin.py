@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tracker.models import Location, Profile  #Trip #Comment #TravelerLocation
+from tracker.models import Location, Profile, Trip  #Comment #TravelerLocation
 
 
 # Register your models here.
@@ -15,12 +15,11 @@ class LocationAdmin(admin.ModelAdmin):
     search_field = ['place_name']
 
 
-'''
+
 @admin.register(Trip)
 class TripAdmin(admin.ModelAdmin):
-    list_display = ['trip_name', 'date_created']
+    list_display = ['trip_name', 'user']
     search_field = ['trip_name']
-'''
 
 '''
 @admin.register(Comment)

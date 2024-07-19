@@ -51,12 +51,14 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.apple',
 
     'decouple',
+    'debug_toolbar',
     # own
     'tracker',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 3rd party
     'allauth.account.middleware.AccountMiddleware',
+    
 ]
 
 SITE_ID = 1
@@ -153,6 +156,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -180,9 +189,6 @@ STATIC_URL = 'static/'
 # supposedly required for CSS (& JS?) imports ; maybe others
 STATIC_ROOT: str = os.path.join(BASE_DIR, 'static_cdn')
 
-#per decouple docs
-#SECRET_KEY = config('SECRET_KEY')
-#DEBUG = config('DEBUG', default=False, cast=bool)
 #EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 #EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 

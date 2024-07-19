@@ -3,22 +3,28 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from tracker.models import Location
-from tracker.forms import LocationCreateForm
+from tracker.models import Location, Trip
+from tracker.forms import LocationCreateForm, TripCreateForm
 from django.views.generic import ListView
 from django.views import View
 from datetime import datetime
 import googlemaps
 
 # Create your views here.
-def index(request):
-    return render(request, 'index.html')
+def default_loggedin(request):
+    return render(request, 'default_loggedin.html')
 
 
 def location_list(request):
     locations = Location.objects.all()
     print(locations)
-    return render(request, 'list.html', {'locations': locations})
+    return render(request, 'locationlist.html', {'locations': locations})
+
+
+def trip_list(request):
+    trips = Trip.objects.all()
+    print(trips)
+    return render(request, 'triplist.html', {'trips': trips})
 
 
 def create_location(request):
@@ -32,6 +38,19 @@ def create_location(request):
     else:
         form = LocationCreateForm()
     return render(request, 'createlocation.html', {'form': form})
+
+
+def create_trip(request):
+    if request.POST:
+        form = TripCreateForm(request.POST)
+        print()
+        if form.is_valid():
+            #place_name = form.cleaned_data['place_name']
+            form.save()
+            form = TripCreateForm()
+    else:
+        form = TripCreateForm()
+    return render(request, 'createtrip.html', {'form': form})
 
 
 def update_profile(request, user_id):
