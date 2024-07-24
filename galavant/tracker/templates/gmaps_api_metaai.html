@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps API Demo</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
+</head>
+<body>
+    <h1>Google Maps API Demo</h1>
+    <input id="place-id" type="text" placeholder="Enter Place ID">
+    <button id="store-button">Store Place</button>
+    <div id="map"></div>
+
+    <script>
+        const apiKey = '{{ GOOGLE_API_KEY }}';
+        const placeIdInput = document.getElementById('place-id');
+        const storeButton = document.getElementById('store-button');
+        const mapDiv = document.getElementById('map');
+
+        storeButton.addEventListener('click', () => {
+            const placeId = placeIdInput.value.trim();
+            if (placeId) {
+                fetch('/store/', {
+                    method: 'POST',
+                    body: JSON.stringify({ place_id: placeId }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // You can use the data to display the stored place on the map
+                    // using the Google Maps JavaScript API
+                })
+                .catch(error => console.error(error));
+            }
+        });
+    </script>
+</body>
+</html>

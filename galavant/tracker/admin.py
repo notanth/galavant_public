@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tracker.models import Location, Profile, Trip  #Comment #TravelerLocation
+from tracker.models import Location, Profile, Trip, LocationUser  #Comment #TravelerLocation
 
 
 # Register your models here.
@@ -7,6 +7,11 @@ from tracker.models import Location, Profile, Trip  #Comment #TravelerLocation
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'twitter_handle']
     search_field = ['user']
+
+
+@admin.register(LocationUser)
+class LocationUserAdmin(admin.ModelAdmin):
+    list_display = ['location', 'user']
 
 
 @admin.register(Location)

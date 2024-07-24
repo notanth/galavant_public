@@ -8,6 +8,37 @@
     <link rel="stylesheet" href="{% static 'base.css' %}" >
 </head>
 <body>
-  {% block content %}{% endblock %}
+  <nav>
+    <ul>
+      {% if user.is_authenticated %}
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+{% else %}
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Signup</a></li>
+{% endif %}
+    </ul>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+        <li><a href="{% url 'create_location' %}">Create Location</a></li>
+        <li><a href="{% url 'create_trip' %}">Create Trip</a></li>
+        <li><a href="{% url 'location_list' %}">Location List</a></li>
+        <li><a href="{% url 'trip_list' %}">Trip List</a></li>
+        <li><a href="{% url 'get_place_details' %}">Get Location (Place) Details</a></li>
+      
+    </ul>
+  </nav>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+  
 </body>
 </html>
+
+<!-- Template for nav bar below -->
+
+
+
+
+
