@@ -69,7 +69,79 @@ def update_profile(request, user_id):
     user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
     user.save()
 
+def search_location(request):
+    if request.method == 'POST':
+        location = request.POST.get('location')
+        api_key = config('GOOGLE_API_KEY')
+        url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
+        response = requests.get(url)
+        data = response.json()
+        print('Google Maps API Response:', data)
+        if data['status'] == 'OK':
+            result = data['candidates'][0]
+            print('Location Info:', result)
+            return render(request, 'search.html', {
+                'latitude': result['geometry']['location']['lat'],
+                'longitude': result['geometry']['location']['lng'],
+                'city': result['formatted_address'].split(',')[1].strip(),
+                'country': result['formatted_address'].split(',')[-1].strip(),
+                'place_name': result['name'],
+                'place_id': result['place_id'],
+                'api_key': api_key,
+            })
+        else:
+            return render(request, 'search.html', {
+                'error': 'Failed to retrieve location info. Please try again.',
+                'api_key': api_key,
+            })
+    return render(request, 'search.html', {
+        'api_key': config('GOOGLE_MAPS_API_KEY'),
+    })
 
+
+'''
+@login_required
+@transaction.atomic
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, _('Your profile was successfully updated!'))
+            return redirect('settings:profile')
+        else:
+            messages.error(request, _('Please correct the error below.'))
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'profiles/profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+'''
+
+
+
+'''
+def location_detail(request, location_name):
+    location =
+    return render(request, '.html')
+'''
+
+
+
+
+'''
+def location_lookup(request, search_text):
+    #google maps api request
+
+    return render(request,
+'''
+
+
+'''
 def index(request):
     return render(request, "index.html", {"api_key": config('GOOGLE_API_KEY')})
 
@@ -113,47 +185,4 @@ def get_place_details(place_id: str) -> dict:
     response.raise_for_status()
     result = response.json().get("result")
     return result
-
-
-
-
-'''
-@login_required
-@transaction.atomic
-def update_profile(request):
-    if request.method == 'POST':
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request, _('Your profile was successfully updated!'))
-            return redirect('settings:profile')
-        else:
-            messages.error(request, _('Please correct the error below.'))
-    else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'profiles/profile.html', {
-        'user_form': user_form,
-        'profile_form': profile_form
-    })
-'''
-
-
-
-'''
-def location_detail(request, location_name):
-    location =
-    return render(request, '.html')
-'''
-
-
-
-
-'''
-def location_lookup(request, search_text):
-    #google maps api request
-
-    return render(request,
 '''

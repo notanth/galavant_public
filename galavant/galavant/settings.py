@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'decouple',
     'debug_toolbar',
     'crispy_forms',
+    "crispy_bootstrap4",
     # own
     'tracker',
 ]
