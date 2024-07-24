@@ -45,13 +45,13 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    #'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.google',
     #'allauth.socialaccount.providers.facebook',
     #'allauth.socialaccount.providers.twitter',
     #'allauth.socialaccount.providers.apple',
-
     'decouple',
     'debug_toolbar',
+    'crispy_forms',
     # own
     'tracker',
 ]
@@ -131,7 +131,7 @@ DATABASES = {
         'NAME': 'galavantdb',
         'USER': 'anthonyc',
         'PASSWORD': 'KbA3#8L!J4E',
-        "HOST": "localhost",
+        "HOST": "127.0.0.1",
         "PORT": "",
     }
 }
@@ -155,12 +155,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+'''
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
     # ...
 ]
+
+'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
