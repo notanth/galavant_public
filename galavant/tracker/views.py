@@ -77,6 +77,7 @@ def autocomplete(request):
     # This endpoint can be used for custom logic if needed
     return JsonResponse([], safe=False)
 
+
 def store_place(request):
     place_id = request.POST.get("place_id")
     place_details = get_place_details(place_id)
