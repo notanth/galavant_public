@@ -196,6 +196,8 @@ STATIC_ROOT: str = os.path.join(BASE_DIR, 'static_cdn')
 #EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 
 #RECAPTCHA_KEY
 

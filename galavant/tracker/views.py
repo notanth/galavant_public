@@ -11,6 +11,7 @@ from datetime import datetime
 from decouple import config
 import googlemaps
 import requests
+import stripe
 
 # Create your views here.
 def home(request):
@@ -25,6 +26,8 @@ def contact(request):
 def default_loggedin(request):
     return render(request, 'default_loggedin.html')
 
+def pricing_page_view(request):
+    return render(request, 'stripe_subscribe.html')
 
 def location_list(request):
     locations = Location.objects.all()

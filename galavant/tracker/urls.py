@@ -20,7 +20,8 @@ urlpatterns = [
     path('triplist/', views.trip_list, name='trip_list'),
     path('createlocation/', views.create_location, name='create_location'),
     path('createtrip/', views.create_trip, name='create_trip'),
-    path('search/', views.search_location, name='search_location')
+    path('search/', views.search_location, name='search_location'),
+    path('subscribe/', views.pricing_page_view, name='pricing_page_view')
 
     
 ]
