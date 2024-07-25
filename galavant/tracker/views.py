@@ -79,7 +79,7 @@ def search_location(request):
         print('Google Maps API Response:', data)
         if data['status'] == 'OK':
             result = data['candidates'][0]
-            print('Location Info:', result)
+            #print('Location Info:', result)
             return render(request, 'search.html', {
                 'latitude': result['geometry']['location']['lat'],
                 'longitude': result['geometry']['location']['lng'],
@@ -92,10 +92,10 @@ def search_location(request):
         else:
             return render(request, 'search.html', {
                 'error': 'Failed to retrieve location info. Please try again.',
-                'api_key': api_key,
+                #'api_key': api_key,
             })
     return render(request, 'search.html', {
-        'api_key': config('GOOGLE_MAPS_API_KEY'),
+        'api_key': config('GOOGLE_API_KEY'),
     })
 
 

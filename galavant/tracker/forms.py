@@ -13,3 +13,6 @@ class TripCreateForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = '__all__'
+
+
+#class SearchLocationForm():
