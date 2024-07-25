@@ -54,6 +54,8 @@ class Profile(models.Model):  # profile table
     nickname = models.CharField(max_length=50, blank=True)
     twitter_handle = models.CharField(max_length=25)
     bio = models.TextField(max_length=500, blank=True)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
     # counts
     places_saved = models.PositiveIntegerField(default=0)
     countries_saved = models.PositiveIntegerField(default=0)

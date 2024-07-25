@@ -1,3 +1,6 @@
+/* Testing out meta AI capabilities */
+
+
 /* Global Styles */
 
 * {
@@ -14,39 +17,67 @@
   /* Header Styles */
   
   #header {
-    background-color: #333;
-    color: #fff;
     padding: 1em;
     text-align: center;
   }
   
-  #nav {
-    position: relative;
-  }
+  /* Nav List Styles */
   
   #nav-list {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    list-style: none;
+  }
+  
+  #nav-list li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  #nav-list a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  #nav-list a:hover {
+    color: #66d9ef;
+  }
+  
+  /* Nav Secondary Styles */
+  
+  #nav-secondary {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  #nav-list-secondary {
     list-style: none;
     display: flex;
     justify-content: space-between;
   }
   
-  .nav-item {
+  #nav-list-secondary li {
     margin-right: 20px;
   }
   
-  .nav-link {
+  #nav-list-secondary a {
     color: #fff;
     text-decoration: none;
     transition: color 0.3s ease;
   }
   
-  .nav-link:hover {
+  #nav-list-secondary a:hover {
     color: #66d9ef;
   }
   
   /* Nav Bar Effects */
   
-  #nav::before {
+  #nav-secondary::before {
     content: "";
     position: absolute;
     top: 0;
@@ -58,12 +89,12 @@
     z-index: -1;
   }
   
-  #nav-list {
+  #nav-list-secondary {
     position: relative;
     z-index: 1;
   }
   
-  .nav-item::after {
+  #nav-list-secondary li::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -76,11 +107,11 @@
     transition: opacity 0.3s ease;
   }
   
-  .nav-item:hover::after {
+  #nav-list-secondary li:hover::after {
     opacity: 1;
   }
   
-  .nav-item::before {
+  #nav-list-secondary li::before {
     content: "";
     position: absolute;
     top: 0;
@@ -93,7 +124,7 @@
     transition: opacity 0.3s ease;
   }
   
-  .nav-item:hover::before {
+  #nav-list-secondary li:hover::before {
     opacity: 1;
   }
   
@@ -101,7 +132,7 @@
   
   #block-content {
     padding: 4em;
-    margin-top: 2em;
+    margin-top: 100px;
     background-color: #fff;
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

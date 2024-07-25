@@ -102,6 +102,8 @@ def search_location(request):
     })
 
 
+
+
 '''
 @login_required
 @transaction.atomic

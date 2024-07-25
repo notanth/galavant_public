@@ -8,36 +8,43 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" >
 </head>
 <body>
-  <nav>
-    <ul>
-      {% if user.is_authenticated %}
-  <li><a href="{% url 'account_logout' %}">Logout</a></li>
-{% else %}
-  <li><a href="{% url 'account_login' %}">Login</a></li>
-  <li><a href="{% url 'account_signup' %}">Signup</a></li>
-{% endif %}
-    </ul>
-    <ul>
-        <li><a href="{% url 'home' %}">Home</a></li>
-        <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'contact' %}">Contact</a></li>
-        <li><a href="{% url 'create_location' %}">Create Location</a></li>
-        <li><a href="{% url 'create_trip' %}">Create Trip</a></li>
-        <li><a href="{% url 'location_list' %}">Location List</a></li>
-        <li><a href="{% url 'trip_list' %}">Trip List</a></li>
-        <li><a href="{% url 'search_location' %}">Search for a location!</a></li>
-        <li><a href="{% url 'pricing_page_view' %}">Subscribe via Stripe!</a></li>
-      
-    </ul>
-  </nav>
+  <!-- Header Section -->
+  <header id="header" class="header-container">
+    <nav id="nav" class="nav-container">
+      <ul id="nav-list" class="nav-list">
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a href="{% url 'account_logout' %}" class="nav-link">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a href="{% url 'account_login' %}" class="nav-link">Login</a></li>
+          <li class="nav-item"><a href="{% url 'account_signup' %}" class="nav-link">Signup</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    <nav id="nav-secondary" class="nav-secondary-container">
+      <ul id="nav-list-secondary" class="nav-list-secondary">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="{% url 'create_location' %}" class="nav-link">Create Location</a></li>
+        <li class="nav-item"><a href="{% url 'create_trip' %}" class="nav-link">Create Trip</a></li>
+        <li class="nav-item"><a href="{% url 'location_list' %}" class="nav-link">Location List</a></li>
+        <li class="nav-item"><a href="{% url 'trip_list' %}" class="nav-link">Trip List</a></li>
+        <li class="nav-item"><a href="{% url 'search_location' %}" class="nav-link">Search for a location!</a></li>
+        <li class="nav-item"><a href="{% url 'pricing_page_view' %}" class="nav-link">Subscribe via Stripe!</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <p> Spacing </p>
-  <div class="container">
-    {% block content %}
-    
-    {% endblock %}
-  </div>
+  <!-- Block Content Section -->
+  <section id="block-content" class="block-content-container">
+    <div class="block-content-wrapper">
+      <div class="container">
+        {% block content %}
+        
+        {% endblock %}
+      </div>
+    </div>
+  </section>
   
 </body>
 </html>
-
