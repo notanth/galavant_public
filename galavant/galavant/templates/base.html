@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'base.css' %}" >
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" >
 </head>
 <body>
   <nav>
@@ -26,11 +26,16 @@
         <li><a href="{% url 'location_list' %}">Location List</a></li>
         <li><a href="{% url 'trip_list' %}">Trip List</a></li>
         <li><a href="{% url 'search_location' %}">Search for a location!</a></li>
+        <li><a href="{% url 'pricing_page_view' %}">Subscribe via Stripe!</a></li>
       
     </ul>
   </nav>
+
+  <p> Spacing </p>
   <div class="container">
-    {% block content %}{% endblock %}
+    {% block content %}
+    
+    {% endblock %}
   </div>
   
 </body>
