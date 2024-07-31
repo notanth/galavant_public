@@ -9,11 +9,9 @@
     {% for trip in trips %}
         <div class="trip">
             <a href="{% url 'trip_list' %}">
-                {{ trip }}
+                {{ trip.trip_name }}
             </a>
-            <br>
-            {{ trip.trip_name }}
-            <br>
+            
      </div>
     {% empty %}
       <p>No trips are available.</p>

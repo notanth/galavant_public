@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Location</title>
+    <script src="https://unpkg.com/htmx.org@1.8.0/dist/htmx.min.js"></script>
+</head>
+<body>
+    <form hx-post="/search_location/" hx-target="#search-results">
+        <input type="text" name="address" placeholder="Enter location">
+        <button type="submit">Search Location</button>
+    </form>
+    <div id="search-results"></div>
+</body>
+</html>

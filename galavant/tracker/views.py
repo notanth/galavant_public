@@ -32,7 +32,7 @@ def pricing_page_view(request):
 def location_list(request):
     locations = Location.objects.all()
     print(locations)
-    return render(request, 'locationlist.html', {'locations': locations})
+    return render(request, 'locationlist_all.html', {'locations': locations})
 
 
 def trip_list(request):
@@ -40,7 +40,7 @@ def trip_list(request):
     print(trips)
     return render(request, 'triplist.html', {'trips': trips})
 
-
+# only created to allow manual input to db from form, will be deprecated
 def create_location(request):
     if request.POST:
         form = LocationCreateForm(request.POST)
@@ -72,36 +72,63 @@ def update_profile(request, user_id):
     user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
     user.save()
 
-def search_location(request):
+def search_location_initial(request):
     if request.method == 'POST':
         location = request.POST.get('location')
         api_key = config('GOOGLE_API_KEY')
         url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
         response = requests.get(url)
         data = response.json()
-        print('Google Maps API Response:', data)
+        print(data)
         if data['status'] == 'OK':
             result = data['candidates'][0]
-            #print('Location Info:', result)
-            return render(request, 'search.html', {
-                'latitude': result['geometry']['location']['lat'],
-                'longitude': result['geometry']['location']['lng'],
-                'city': result['formatted_address'].split(',')[1].strip(),
-                'country': result['formatted_address'].split(',')[-1].strip(),
-                'place_name': result['name'],
-                'place_id': result['place_id'],
-                'api_key': api_key,
-            })
+            return redirect('save_location_preview', 
+                            latitude=result['geometry']['location']['lat'], 
+                            longitude=result['geometry']['location']['lng'], 
+                            city=result['formatted_address'].split(',')[1].strip(), 
+                            country=result['formatted_address'].split(',')[-1].strip(), 
+                            place_name=result['name'], 
+                            place_id=result['place_id'])
         else:
-            return render(request, 'search.html', {
+            return render(request, 'search_initial.html', {
                 'error': 'Failed to retrieve location info. Please try again.',
-                #'api_key': api_key,
             })
-    return render(request, 'search.html', {
-        'api_key': config('GOOGLE_API_KEY'),
+    return render(request, 'search_initial.html')
+
+def save_location_preview(request, latitude, longitude, city, country, place_name, place_id):
+    return render(request, 'save_location_preview.html', {
+        'latitude': latitude,
+        'longitude': longitude,
+        'city': city,
+        'country': country,
+        'place_name': place_name,
+        'place_id': place_id,
     })
 
+def save_location(request):
+    if request.method == 'POST':
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+        city = request.POST.get('city')
+        country = request.POST.get('country')
+        place_name = request.POST.get('place_name')
+        place_id = request.POST.get('place_id')
 
+        location = Location(
+            latitude=latitude,
+            longitude=longitude,
+            city=city,
+            country=country,
+            place_name=place_name,
+            place_id=place_id
+        )
+        location.save()
+
+        return redirect('location_saved')
+    return redirect('search_location')
+
+def location_saved(request):
+    return render(request, 'location_saved.html')
 
 
 '''
@@ -133,16 +160,6 @@ def update_profile(request):
 def location_detail(request, location_name):
     location =
     return render(request, '.html')
-'''
-
-
-
-
-'''
-def location_lookup(request, search_text):
-    #google maps api request
-
-    return render(request,
 '''
 
 
