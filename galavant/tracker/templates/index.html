@@ -1,0 +1,15 @@
+{%  extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <h2>My awesome site</h2>
+
+    {% if request.user.is_authenticated %}
+        Welcome back {{ request.user.username }}, <a href="{% url 'account_logout' %}"></a></a>
+    {% else %}
+        Hey stranger, <a href="{% url 'account_login' %}">login</a>
+    {% endif %}
+
+{% endblock %}

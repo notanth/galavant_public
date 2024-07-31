@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Desired Location Here
+{% endblock %}
+
+{% block content %}
+    <h1>Create a location!</h1>
+    <form method="POST" action="{% url 'create_location' %}" enctype="multipart/form-data" >
+        {{ form }}
+        {% csrf_token %}
+        
+        <input type="submit" value="Create location" >
+    </form>
+{% endblock %}
