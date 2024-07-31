@@ -17,7 +17,7 @@
     <body>
         <form hx-post="/search_location/" hx-target="#search-results">
             {% csrf_token %}
-            <input type="text" name="location" placeholder="Enter location">
+            <input type="text" name="location" placeholder="Enter a location">
             <button type="submit">Search Location</button>
         </form>
         <div id="search-results"></div>

@@ -1,12 +1,10 @@
 
 
-{%  extends "base.html" %}
-
 {% load static %}
 
 <head><link rel="stylesheet" href="{% static 'base.css' %}" ></head>
 
-{% block title %}Locations {% endblock %}
+{% block title %}Location Details - Search {% endblock %}
 
 {% block content %}
 
@@ -29,17 +27,20 @@
     </tr>
 </table>
 <div id="map" style="width: 500px; height: 300px;"></div>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}"></script>
-<script>
-    var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: {{ latitude }}, lng: {{ longitude }}},
-        zoom: 15
-    });
-    var marker = new google.maps.Marker({
-        position: {lat: {{ latitude }}, lng: {{ longitude }}},
-        map: map
-    });
-</script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: {{ latitude }}, lng: {{ longitude }}},
+                zoom: 10
+            });
+            var marker = new google.maps.Marker({
+                position: {lat: {{ latitude }}, lng: {{ longitude }}},
+                map: map
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap"></script>
+    
 <form hx-post="/save_location/" hx-target="#search-results">
     {% csrf_token %}
     <input type="hidden" name="place_id" value="{{ place_id }}">
