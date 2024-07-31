@@ -99,21 +99,23 @@ def search_location(request):
     if request.method == 'POST':
         location = request.POST.get('location')
         api_key = config('GOOGLE_API_KEY')
-        url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=place_id,name,geometry&key={api_key}'
+        url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
         response = requests.get(url)
-        #add in response.status_code = 200 or other logic in here
         data = response.json()
-        print(data)
-        data = data['candidates'][0]
-        return render(request, 'search_res.html', {
-            #'latitude': data['geometry']['location']['lat'],
-            latitude=data['geometry']['location']['lat'], 
-        })
-    else:
-        return render(request, 'search_location.html', {
-            'error': 'Failed to retrieve location info. Please try again.',
-        })
-
+        if data['status'] == 'OK':
+            result = data['candidates'][0]
+            return render(request, 'search_results.html', {
+                'latitude': result['geometry']['location']['lat'],
+                'longitude': result['geometry']['location']['lng'],
+                'city': result['formatted_address'].split(',')[1].strip(),
+                'country': result['formatted_address'].split(',')[-1].strip(),
+                'place_name': result['name'],
+                'place_id': result['place_id'],
+            })
+        else:
+            return render(request, 'search_location.html', {
+                'error': 'Failed to retrieve location info. Please try again.',
+            })
     return render(request, 'search_location.html')
 
 
