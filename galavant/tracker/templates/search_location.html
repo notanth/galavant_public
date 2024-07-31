@@ -1,0 +1,26 @@
+
+
+{%  extends "base.html" %}
+
+{% load static %}
+
+<head><link rel="stylesheet" href="{% static 'base.css' %}" ></head>
+
+{% block title %}Locations {% endblock %}
+
+{% block content %}
+
+    <head>
+        <title>Search Location</title>
+        <script src="https://unpkg.com/htmx.org@1.8.0/dist/htmx.min.js"></script>
+    </head>
+    <body>
+        <form hx-post="/search_location/" hx-target="#search-results">
+            {% csrf_token %}
+            <input type="text" name="location" placeholder="Enter a location">
+            <button type="submit">Search Location</button>
+        </form>
+        <div id="search-results"></div>
+    </body>
+
+{% endblock %}

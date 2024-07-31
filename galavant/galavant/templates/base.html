@@ -5,9 +5,47 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link href="{% static "galavant/base.css" %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" >
 </head>
 <body>
-  {% block content %}{% endblock %}
+  <!-- Header Section -->
+  <header id="header" class="header-container">
+    <nav id="nav" class="nav-container">
+      <ul id="nav-list" class="nav-list">
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a href="{% url 'account_logout' %}" class="nav-link">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a href="{% url 'account_login' %}" class="nav-link">Login</a></li>
+          <li class="nav-item"><a href="{% url 'account_signup' %}" class="nav-link">Signup</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    <nav id="nav-secondary" class="nav-secondary-container">
+      <ul id="nav-list-secondary" class="nav-list-secondary">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="{% url 'create_location' %}" class="nav-link">Create Location</a></li>
+        <li class="nav-item"><a href="{% url 'create_trip' %}" class="nav-link">Create Trip</a></li>
+        <li class="nav-item"><a href="{% url 'location_list' %}" class="nav-link">Location List</a></li>
+        <li class="nav-item"><a href="{% url 'trip_list' %}" class="nav-link">Trip List</a></li>
+        <li class="nav-item"><a href="{% url 'search_location_initial' %}" class="nav-link">Search for a location! (old)</a></li>
+        <li class="nav-item"><a href="{% url 'search_location' %}" class="nav-link">Search for a location! (new view)</a></li>
+        <li class="nav-item"><a href="{% url 'pricing_page_view' %}" class="nav-link">Subscribe via Stripe!</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Block Content Section -->
+  <section id="block-content" class="block-content-container">
+    <div class="block-content-wrapper">
+      <div class="container">
+        {% block content %}
+        
+        {% endblock %}
+      </div>
+    </div>
+  </section>
+  
 </body>
 </html>

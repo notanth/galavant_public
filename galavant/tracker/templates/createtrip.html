@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Desired Trip Here - this is used to tag your locations and begin creating an itinerary (coming soon!)
+{% endblock %}
+
+{% block content %}
+    <h1>Create a trip!</h1>
+    <form method="POST" action="{% url 'create_trip' %}" enctype="multipart/form-data" >
+        {{ form }}
+        {% csrf_token %}
+        
+        <input type="submit" value="Create trip" >
+    </form>
+{% endblock %}
