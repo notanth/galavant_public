@@ -20,6 +20,9 @@ urlpatterns = [
     path('triplist/', views.trip_list, name='trip_list'),
     path('createlocation/', views.create_location, name='create_location'),
     path('createtrip/', views.create_trip, name='create_trip'),
+    path('search_location/', views.search_location, name='search_location'),
+    path('save_location/', views.save_location, name='save_location'),
+
     path('search_initial/', views.search_location_initial, name='search_location_initial'),
     path('save_location_preview/<str:latitude>/<str:longitude>/<str:city>/<str:country>/<str:place_name>/<str:place_id>/', views.save_location_preview, name='save_location_preview'),
     path('save_location/', views.save_location, name='save_location'),

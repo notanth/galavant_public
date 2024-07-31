@@ -68,6 +68,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 3rd party
     'allauth.account.middleware.AccountMiddleware',
+    # may need to re-add this below
     #'htmx.middleware.HTMXMiddleware',
     
 ]

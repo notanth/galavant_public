@@ -95,6 +95,28 @@ def search_location_initial(request):
             })
     return render(request, 'search_initial.html')
 
+def search_location(request):
+    if request.method == 'POST':
+        location = request.POST.get('location')
+        api_key = config('GOOGLE_API_KEY')
+        url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=place_id,name,geometry&key={api_key}'
+        response = requests.get(url)
+        #add in response.status_code = 200 or other logic in here
+        data = response.json()
+        print(data)
+        data = data['candidates'][0]
+        return render(request, 'search_res.html', {
+            #'latitude': data['geometry']['location']['lat'],
+            latitude=data['geometry']['location']['lat'], 
+        })
+    else:
+        return render(request, 'search_location.html', {
+            'error': 'Failed to retrieve location info. Please try again.',
+        })
+
+    return render(request, 'search_location.html')
+
+
 def save_location_preview(request, latitude, longitude, city, country, place_name, place_id):
     return render(request, 'save_location_preview.html', {
         'latitude': latitude,
@@ -129,6 +151,8 @@ def save_location(request):
 
 def location_saved(request):
     return render(request, 'location_saved.html')
+
+
 
 
 '''
