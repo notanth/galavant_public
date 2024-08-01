@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1>Create a trip!</h1>
-    <form method="POST" action="{% url 'create_trip' %}" enctype="multipart/form-data" >
+    <form method="POST" action="{% url 'create_trip' %}" enctype="text/plain" >
         {{ form }}
         {% csrf_token %}
         

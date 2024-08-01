@@ -36,7 +36,7 @@ class LocationUser(models.Model):
     name = models.CharField(max_length=50, blank=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, default=1)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    trip = models.ForeignKey(Trip, blank=True, on_delete=models.CASCADE)
+    trip = models.ForeignKey(Trip, blank=True, on_delete=models.CASCADE, null=True)
     been_to_before = models.BooleanField(default=False, blank=True)
 
 

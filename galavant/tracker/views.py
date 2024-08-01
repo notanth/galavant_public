@@ -46,7 +46,6 @@ def create_location(request):
         form = LocationCreateForm(request.POST)
         print()
         if form.is_valid():
-            #place_name = form.cleaned_data['place_name']
             form.save()
             form = LocationCreateForm()
     else:
@@ -55,11 +54,10 @@ def create_location(request):
 
 
 def create_trip(request):
-    if request.POST:
+    if request.method == 'POST':
         form = TripCreateForm(request.POST)
         print()
         if form.is_valid():
-            #place_name = form.cleaned_data['place_name']
             form.save()
             form = TripCreateForm()
     else:
@@ -69,7 +67,7 @@ def create_trip(request):
 
 def update_profile(request, user_id):
     user = User.objects.get(pk=user_id)
-    user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
+    #user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
     user.save()
 
 def search_location_initial(request):
@@ -102,21 +100,36 @@ def search_location(request):
         url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
         response = requests.get(url)
         data = response.json()
+        print(data)
         if data['status'] == 'OK':
-            result = data['candidates'][0]
+            place_id = data['candidates'][0]['place_id']
+            place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=address_component&key={api_key}'
+            place_details_response = requests.get(place_details_url)
+            place_details_data = place_details_response.json()
+            result = place_details_data['result']
             return render(request, 'search_results.html', {
-                'latitude': result['geometry']['location']['lat'],
-                'longitude': result['geometry']['location']['lng'],
-                'city': result['formatted_address'].split(',')[1].strip(),
-                'country': result['formatted_address'].split(',')[-1].strip(),
-                'place_name': result['name'],
-                'place_id': result['place_id'],
+                'latitude': data['candidates'][0]['geometry']['location']['lat'],
+                'longitude': data['candidates'][0]['geometry']['location']['lng'],
+                'city': [component['long_name'] for component in result['address_components'] if 'locality' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'locality' in component['types']] else None,
+                'country': [component['long_name'] for component in result['address_components'] if 'country' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'country' in component['types']] else None,
+                'place_name': data['candidates'][0]['name'],
+                'place_id': place_id,
+                'api_key': api_key,
             })
         else:
             return render(request, 'search_location.html', {
                 'error': 'Failed to retrieve location info. Please try again.',
             })
     return render(request, 'search_location.html')
+
+def autocomplete(request):
+    if request.method == 'GET':
+        input_val = request.GET.get('location')
+        api_key = config('GOOGLE_API_KEY')
+        url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_val}&key={api_key}'
+        response = requests.get(url)
+        data = response.json()
+        return HttpResponse(data, content_type='application/json')
 
 
 def save_location_preview(request, latitude, longitude, city, country, place_name, place_id):
@@ -129,15 +142,18 @@ def save_location_preview(request, latitude, longitude, city, country, place_nam
         'place_id': place_id,
     })
 
+
+#check if location exists, update count if it does; if not, create location
+#create location user object when save_location
 def save_location(request):
+    #print(request.POST)
     if request.method == 'POST':
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
+        latitude = request.POST.get('lat')
+        longitude = request.POST.get('lng')
         city = request.POST.get('city')
         country = request.POST.get('country')
         place_name = request.POST.get('place_name')
         place_id = request.POST.get('place_id')
-
         location = Location(
             latitude=latitude,
             longitude=longitude,
@@ -154,7 +170,7 @@ def save_location(request):
 def location_saved(request):
     return render(request, 'location_saved.html')
 
-
+# view to update location-traveler trip name
 
 
 '''
