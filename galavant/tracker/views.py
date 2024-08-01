@@ -156,17 +156,17 @@ def save_location(request):
         place_id = request.POST.get('place_id')
 
         if not Location.objects.filter(place_id=place_id).exists():
-            Votes.objects.create(**your_data)
-
-        location = Location(
-            latitude=latitude,
-            longitude=longitude,
-            city=city,
-            country=country,
-            place_name=place_name,
-            place_id=place_id
-        )
-        location.save()
+            location = Location(
+                latitude=latitude,
+                longitude=longitude,
+                city=city,
+                country=country,
+                place_name=place_name,
+                place_id=place_id
+            )
+            location.save()
+        else:
+            instance.total_location_saves +=1
 
         return redirect('location_saved')
     return redirect('search_location')
