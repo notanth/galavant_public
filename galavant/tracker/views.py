@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from tracker.models import Location, Trip
+from tracker.models import Location, Trip, LocationUser
 from tracker.forms import LocationCreateForm, TripCreateForm
 from django.views.generic import ListView
 from django.views import View
@@ -165,6 +165,12 @@ def save_location(request):
                 place_id=place_id
             )
             location.save()
+            
+            locationuser = LocationUser(
+                location=place_name, #place_name from google; switch to id/add additional name-related field to model?
+                user=User
+            )
+            locationuser.save()
         else:
             instance.total_location_saves +=1
 

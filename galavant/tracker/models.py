@@ -33,8 +33,9 @@ class Location(models.Model):
 
 
 class LocationUser(models.Model):
-    name = models.CharField(max_length=50, blank=False) #place_name from google, id better....?
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, default=1)
+    name = models.CharField(max_length=50, blank=False) #if user wants to give a custom name, default to place_name
+    #place_id = 
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, default=1) #place_name from google, should we switch to/include place_id?
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     trip = models.ForeignKey(Trip, blank=True, on_delete=models.CASCADE, null=True)
     been_to_before = models.BooleanField(default=False, blank=True)
