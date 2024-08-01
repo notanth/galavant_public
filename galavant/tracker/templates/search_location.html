@@ -2,64 +2,22 @@
 
 {% load static %}
 
-<head>
-    <link rel="stylesheet" href="{% static 'base.css' %}">
-    <script src="https://unpkg.com/htmx.org@1.8.0/dist/htmx.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
-</head>
+{% block extra_head %}
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
+  <link rel="stylesheet" href="{% static 'base.css' %}">
+{% endblock %}
 
 {% block title %}Locations {% endblock %}
 
 {% block content %}
 
-    <form hx-post="/search_location/" hx-target="#search-results">
-        {% csrf_token %}
-        <input type="text" id="place-input" name="location" placeholder="Enter a location" hx-trigger="keyup changed delay:500ms from:place-input" hx-get="{% url 'autocomplete' %}" hx-target="#results">
-        <button type="submit">Search Location</button>
-        <div id="results"></div>
-    </form>
-    <div id="search-results"></div>
+    <input class="form-control" type="search"
+      id="location" name="location" placeholder="Enter a location"
+      hx-post="{% url 'autocomplete' %}"
+      hx-trigger="input changed delay:500ms, search"
+      hx-target="#search-results">
 
-    <script>
-        let autocompleteService;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            autocompleteService = new google.maps.places.AutocompleteService();
-        });
-
-        document.getElementById('place-input').addEventListener('input', function() {
-            let input = this.value;
-
-            if (input.length > 2) {
-                autocompleteService.getPlacePredictions({ location }, displaySuggestions);
-            } else {
-                clearSuggestions();
-            }
-        });
-
-        function displaySuggestions(predictions, status) {
-            const resultsDiv = document.getElementById('results');
-            if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) {
-                resultsDiv.innerHTML = ''; // Clear results only if no valid predictions
-                return;
-            }
-
-            resultsDiv.innerHTML = ''; // Clear previous results
-
-            predictions.forEach((prediction) => {
-                const div = document.createElement('div');
-                div.textContent = prediction.description;
-                div.addEventListener('click', function() {
-                    document.getElementById('place-input').value = prediction.description;
-                    clearSuggestions();
-                });
-                resultsDiv.appendChild(div);
-            });
-        }
-
-        function clearSuggestions() {
-            document.getElementById('results').innerHTML = '';
-        }
-    </script>
+    <table id="search-results">
+    </table>
 
 {% endblock %}

@@ -9,6 +9,8 @@ from django.views.generic import ListView
 from django.views import View
 from datetime import datetime
 from decouple import config
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 import googlemaps
 import requests
 import stripe
@@ -80,12 +82,12 @@ def search_location_initial(request):
         print(data)
         if data['status'] == 'OK':
             result = data['candidates'][0]
-            return redirect('save_location_preview', 
-                            latitude=result['geometry']['location']['lat'], 
-                            longitude=result['geometry']['location']['lng'], 
-                            city=result['formatted_address'].split(',')[1].strip(), 
-                            country=result['formatted_address'].split(',')[-1].strip(), 
-                            place_name=result['name'], 
+            return redirect('save_location_preview',
+                            latitude=result['geometry']['location']['lat'],
+                            longitude=result['geometry']['location']['lng'],
+                            city=result['formatted_address'].split(',')[1].strip(),
+                            country=result['formatted_address'].split(',')[-1].strip(),
+                            place_name=result['name'],
                             place_id=result['place_id'])
         else:
             return render(request, 'search_initial.html', {
@@ -122,14 +124,17 @@ def search_location(request):
             })
     return render(request, 'search_location.html')
 
+@csrf_exempt
+@require_POST
 def autocomplete(request):
-    if request.method == 'GET':
-        input_val = request.GET.get('location')
-        api_key = config('GOOGLE_API_KEY')
-        url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_val}&key={api_key}'
-        response = requests.get(url)
-        data = response.json()
-        return HttpResponse(data, content_type='application/json')
+    print(request.POST)
+    input_val = request.POST.get('location', '')
+    api_key = config('GOOGLE_API_KEY')
+    url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_val}&key={api_key}'
+    response = requests.get(url)
+    data = response.json()
+    # todo: parse and make table rows
+    return HttpResponse(data, content_type='text/plain')
 
 
 def save_location_preview(request, latitude, longitude, city, country, place_name, place_id):
@@ -155,24 +160,22 @@ def save_location(request):
         place_name = request.POST.get('place_name')
         place_id = request.POST.get('place_id')
 
-        if not Location.objects.filter(place_id=place_id).exists():
-            location = Location(
-                latitude=latitude,
-                longitude=longitude,
-                city=city,
-                country=country,
-                place_name=place_name,
-                place_id=place_id
-            )
-            location.save()
-            
-            locationuser = LocationUser(
-                location=place_name, #place_name from google; switch to id/add additional name-related field to model?
-                user=User
-            )
-            locationuser.save()
-        else:
+        instance, created = Location.objects.get_or_create(
+            latitude=latitude,
+            longitude=longitude,
+            city=city,
+            country=country,
+            place_name=place_name,
+            place_id=place_id
+        )
+        if not created:
             instance.total_location_saves +=1
+
+        LocationUser.objects.create(
+            name=place_name,
+            location=instance,
+            user=request.user,
+        )
 
         return redirect('location_saved')
     return redirect('search_location')
