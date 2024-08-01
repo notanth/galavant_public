@@ -154,6 +154,10 @@ def save_location(request):
         country = request.POST.get('country')
         place_name = request.POST.get('place_name')
         place_id = request.POST.get('place_id')
+
+        if not Location.objects.filter(place_id=place_id).exists():
+            Votes.objects.create(**your_data)
+
         location = Location(
             latitude=latitude,
             longitude=longitude,
