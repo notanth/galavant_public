@@ -133,8 +133,13 @@ def autocomplete(request):
     url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_val}&key={api_key}'
     response = requests.get(url)
     data = response.json()
+    #print(data)
+    location_options = []
+    for location in data['predictions']:
+        location_options.append(location['description'])
     # todo: parse and make table rows
-    return HttpResponse(data, content_type='text/plain')
+    return render(request, '')
+    #return HttpResponse(data, content_type='text/plain')
 
 
 def save_location_preview(request, latitude, longitude, city, country, place_name, place_id):
@@ -171,7 +176,7 @@ def save_location(request):
         if not created:
             instance.total_location_saves +=1
 
-        LocationUser.objects.create(
+        LocationUser.objects.get_or_create(
             name=place_name,
             location=instance,
             user=request.user,

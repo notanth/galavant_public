@@ -15,9 +15,16 @@
       id="location" name="location" placeholder="Enter a location"
       hx-post="{% url 'autocomplete' %}"
       hx-trigger="input changed delay:500ms, search"
-      hx-target="#search-results">
+      hx-target="#search-results"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
     <table id="search-results">
-    </table>
+      {% for option in location_options %}
+        <tr>
+          <td> {{ option }} </td>
+        </tr>
+      {% endfor %}
+
+      </table>
 
 {% endblock %}
