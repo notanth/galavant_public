@@ -138,8 +138,8 @@ def autocomplete(request):
     for location in data['predictions']:
         location_options.append(location['description'])
     # todo: parse and make table rows
-    return render(request, '')
-    #return HttpResponse(data, content_type='text/plain')
+    #return render(request, '')
+    return HttpResponse(location_options, content_type='text/plain')
 
 
 def save_location_preview(request, latitude, longitude, city, country, place_name, place_id):
