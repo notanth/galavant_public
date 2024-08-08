@@ -18,13 +18,14 @@
       hx-target="#search-results"
       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-    <table id="search-results">
-      {% for option in location_options %}
-        <tr>
-          <td> {{ option }} </td>
-        </tr>
-      {% endfor %}
+    <div id="search-results">
+      <table id="search-results">
+        {% for option in location_options %}
+          <tr>
+            <td> {{ option }} </td>
+          </tr>
+        {% endfor %}
 
-      </table>
-
+        </table>
+    </div>
 {% endblock %}
