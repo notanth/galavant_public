@@ -4,28 +4,28 @@
 
 {% block extra_head %}
   <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
-  <link rel="stylesheet" href="{% static 'base.css' %}">
 {% endblock %}
 
 {% block title %}Locations {% endblock %}
 
 {% block content %}
 
-    <input class="form-control" type="search"
-      id="location" name="location" placeholder="Enter a location"
-      hx-post="{% url 'autocomplete' %}"
-      hx-trigger="input changed delay:500ms, search"
-      hx-target="#search-results"
-      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <input class="form-control" type="search"
+    id="location" name="location" placeholder="Enter a location"
+    hx-post="{% url 'autocomplete' %}"
+    hx-trigger="input changed delay:500ms, search"
+    hx-target="#search-results"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-    <div id="search-results">
-      <table id="search-results">
-        {% for option in location_options %}
-          <tr>
-            <td> {{ option }} </td>
-          </tr>
+  <!-- <div id="search-results"> -->
+  <table id="search-results">
+    {% for option in location_options %}
+      <tr>
+        {% for item in option %}
+          <td>{{ item }}</td>
         {% endfor %}
-
-        </table>
-    </div>
+      </tr>
+    {% endfor %}
+</table>
+  
 {% endblock %}

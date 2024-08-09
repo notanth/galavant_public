@@ -138,7 +138,7 @@ def autocomplete(request):
     #print(data)
     location_options = []
     for location in data['predictions']:
-        location_options.append(location['description'])
+        location_options.append([location['description']])
     print(location_options)
     # todo: parse and make table rows
     #return render(request, '')
