@@ -159,10 +159,10 @@ def save_location_preview(request, latitude, longitude, city, country, place_nam
 #check if location exists, update count if it does; if not, create location
 #create location user object when save_location
 def save_location(request):
-    #print(request.POST)
+    print(request.POST)
     if request.method == 'POST':
-        latitude = request.POST.get('lat')
-        longitude = request.POST.get('lng')
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
         city = request.POST.get('city')
         country = request.POST.get('country')
         place_name = request.POST.get('place_name')
