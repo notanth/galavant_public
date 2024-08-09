@@ -1,17 +1,16 @@
-{%  extends "base.html" %}
-
-{% load static %}
-
-
-
-{% block title %}Locations {% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
 
-    <h2>Location Map</h2>
+    {{ map|safe }}
 
-    <body>
-        {{ map|safe }}
-    </body>
-    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function copyCoordinates(latitude, longitude) {
+                navigator.clipboard.writeText(`${latitude}, ${longitude}`);
+                alert("Coordinates copied to clipboard!");
+            }
+        });
+    </script>
+
 {% endblock %}

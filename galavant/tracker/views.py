@@ -168,6 +168,7 @@ def save_location(request):
         place_name = request.POST.get('place_name')
         place_id = request.POST.get('place_id')
 
+        #get or create is working but +=1 if exists is not. need to investigate
         instance, created = Location.objects.get_or_create(
             latitude=latitude,
             longitude=longitude,
@@ -203,8 +204,8 @@ def plot_locations(request):
     for location in locations:
         folium.Marker(
             [location.latitude, location.longitude],
-            #tooltip=location.place_name,
-            popup=location.place_name
+            tooltip=location.place_name,
+            #popup=location.place_name
         ).add_to(map)
     map = map._repr_html_()
     return render(request, 'map_pinned.html', {'map': map})
