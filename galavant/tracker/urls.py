@@ -29,6 +29,7 @@ urlpatterns = [
     path('save_location/', views.save_location, name='save_location'),
     path('subscribe/', views.pricing_page_view, name='pricing_page_view'),
     path('location_saved/', views.location_saved, name='location_saved'),
-
+    path('map_pinned/', views.plot_locations, name='plot_locations'),
+    path('heatmap/', views.plot_heatmap, name='plot_heatmap'),
     
 ]

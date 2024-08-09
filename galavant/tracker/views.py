@@ -14,6 +14,8 @@ from django.views.decorators.http import require_POST
 import googlemaps
 import requests
 import stripe
+import folium
+from folium.plugins import HeatMap
 
 # Create your views here.
 def home(request):
@@ -137,6 +139,7 @@ def autocomplete(request):
     location_options = []
     for location in data['predictions']:
         location_options.append(location['description'])
+    print(location_options)
     # todo: parse and make table rows
     #return render(request, '')
     return HttpResponse(location_options, content_type='text/plain')
@@ -190,6 +193,31 @@ def location_saved(request):
 
 # view to update location-traveler trip name
 
+
+
+
+#plotting all locations regardless of user
+def plot_locations(request):
+    locations = Location.objects.all()
+    map = folium.Map(location=[15, 0], zoom_start=2)
+    for location in locations:
+        folium.Marker(
+            [location.latitude, location.longitude],
+            #tooltip=location.place_name,
+            popup=location.place_name
+        ).add_to(map)
+    map = map._repr_html_()
+    return render(request, 'map_pinned.html', {'map': map})
+
+
+#heatmap of all locations
+def plot_heatmap(request):
+    locations = Location.objects.all()
+    map = folium.Map(location=[15, 0], zoom_start=2)
+    heat_data = [[location.latitude, location.longitude] for location in locations]
+    folium.plugins.HeatMap(heat_data, radius=15).add_to(map)
+    map = map._repr_html_()
+    return render(request, 'heatmap.html', {'map': map})
 
 '''
 @login_required

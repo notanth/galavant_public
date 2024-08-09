@@ -1,0 +1,17 @@
+{%  extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block title %}Locations {% endblock %}
+
+{% block content %}
+
+    <h2>Location Map</h2>
+
+    <body>
+        {{ map|safe }}
+    </body>
+    
+{% endblock %}
