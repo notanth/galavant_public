@@ -16,6 +16,11 @@ import requests
 import stripe
 import folium
 from folium.plugins import HeatMap
+from dataclasses import dataclass
+
+#create constants for api_key & others?
+api_key = config('GOOGLE_API_KEY')
+
 
 # Create your views here.
 def home(request):
@@ -33,18 +38,24 @@ def default_loggedin(request):
 def pricing_page_view(request):
     return render(request, 'stripe_subscribe.html')
 
+@login_required
 def location_list(request):
     locations = Location.objects.all()
     print(locations)
     return render(request, 'locationlist_all.html', {'locations': locations})
 
 
+@login_required
 def trip_list(request):
-    trips = Trip.objects.all()
+    if request.user.is_authenticated:
+        trips = Trip.objects.filter(user=request.user)
+    else:
+        None
     print(trips)
     return render(request, 'triplist.html', {'trips': trips})
 
 # only created to allow manual input to db from form, will be deprecated
+@login_required
 def create_location(request):
     if request.POST:
         form = LocationCreateForm(request.POST)
@@ -56,7 +67,7 @@ def create_location(request):
         form = LocationCreateForm()
     return render(request, 'createlocation.html', {'form': form})
 
-
+@login_required
 def create_trip(request):
     if request.method == 'POST':
         form = TripCreateForm(request.POST)
@@ -68,29 +79,53 @@ def create_trip(request):
         form = TripCreateForm()
     return render(request, 'createtrip.html', {'form': form})
 
-
+@login_required
 def update_profile(request, user_id):
     user = User.objects.get(pk=user_id)
     #user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
+    #create form and view to let user load and update data
+    #update stripe info upon subscription
     user.save()
+
+'''
+#object for storing location info, bad practice to use same name as model?
+@dataclass
+class Location:
+    latitude: float
+    longitude: float
+    city: str
+    country: str
+    place_name: str
+    place_id: str
+
+def store_location_data(location: Location):
+    latitude=result['geometry']['location']['lat']
+'''
 
 def search_location_initial(request):
     if request.method == 'POST':
+        #named tuple as object
         location = request.POST.get('location')
-        api_key = config('GOOGLE_API_KEY')
         url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
         response = requests.get(url)
         data = response.json()
         print(data)
         if data['status'] == 'OK':
             result = data['candidates'][0]
-            return redirect('save_location_preview',
-                            latitude=result['geometry']['location']['lat'],
-                            longitude=result['geometry']['location']['lng'],
-                            city=result['formatted_address'].split(',')[1].strip(),
-                            country=result['formatted_address'].split(',')[-1].strip(),
-                            place_name=result['name'],
-                            place_id=result['place_id'])
+            #named tuple or data class object to pass 
+            #named 
+            #embed object and remove save_location_preivew
+            return render(request, 'save_location_preview.html',
+                          {})
+            '''
+                latitude=result['geometry']['location']['lat'],
+                longitude=result['geometry']['location']['lng'],
+                city=result['formatted_address'].split(',')[1].strip(),
+                country=result['formatted_address'].split(',')[-1].strip(),
+                place_name=result['name'],
+                place_id=result['place_id'],
+                api_key=api_key)
+            '''
         else:
             return render(request, 'search_initial.html', {
                 'error': 'Failed to retrieve location info. Please try again.',
@@ -100,7 +135,6 @@ def search_location_initial(request):
 def search_location(request):
     if request.method == 'POST':
         location = request.POST.get('location')
-        api_key = config('GOOGLE_API_KEY')
         url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
         response = requests.get(url)
         data = response.json()
@@ -111,9 +145,11 @@ def search_location(request):
             place_details_response = requests.get(place_details_url)
             place_details_data = place_details_response.json()
             result = place_details_data['result']
+            #create place object ; render should not do all of this logic
             return render(request, 'search_results.html', {
                 'latitude': data['candidates'][0]['geometry']['location']['lat'],
                 'longitude': data['candidates'][0]['geometry']['location']['lng'],
+                #helper function to de-duplicate or use a method for constructor dunder dunder post init data class
                 'city': [component['long_name'] for component in result['address_components'] if 'locality' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'locality' in component['types']] else None,
                 'country': [component['long_name'] for component in result['address_components'] if 'country' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'country' in component['types']] else None,
                 'place_name': data['candidates'][0]['name'],
@@ -125,27 +161,60 @@ def search_location(request):
                 'error': 'Failed to retrieve location info. Please try again.',
             })
     return render(request, 'search_location.html')
+"""
+<tr><td><a href...>location</a></td></tr>
+from django.urls import reverse
+reserve("search_location")
+reserve("search_location") + "?location=" + location
+"""
 
 @csrf_exempt
 @require_POST
 def autocomplete(request):
     print(request.POST)
     input_val = request.POST.get('location', '')
-    api_key = config('GOOGLE_API_KEY')
     url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_val}&key={api_key}'
     response = requests.get(url)
     data = response.json()
     #print(data)
     location_options = []
     for location in data['predictions']:
-        location_options.append([location['description']])
+        location_options.append(location['description'])
     print(location_options)
-    # todo: parse and make table rows
-    #return render(request, '')
-    return HttpResponse(location_options, content_type='text/plain')
+    print(len(location_options))
+    location_html_table = """
+            <tr>
+                <th>Location Options</th>
+            </tr>
+            {}
+    """
+    #django function to create url for links 
+    #from django.urls import reverse (name of link in urls.py)
+    """bites/models.py
+        from django.urls import reverse
+        tips_link = reverse('tips')
+        search_location/
+        """
+    
+    rows = ""
+    for location in location_options:
+        rows += """
+        
+            <tr>
+                <td><a href='/search_results'</a>></td>
+            </tr>
+        """.format(location, location)
 
+    location_html_table = location_html_table.format(rows)
 
-def save_location_preview(request, latitude, longitude, city, country, place_name, place_id):
+    # todo: parse and make table rows table row and table cell; add column with ajax action to handle the checkbox
+    # table cell with a link to save to pass that along
+    #return render(request, 'location_table_partial.html', {'location_html_table': location_html_table})
+    return HttpResponse(location_html_table, content_type='text/plain')
+
+#merge arguments to one object
+'''
+def save_location_preview(request, latitude, longitude, city, country, place_name, place_id, api_key):
     return render(request, 'save_location_preview.html', {
         'latitude': latitude,
         'longitude': longitude,
@@ -153,7 +222,9 @@ def save_location_preview(request, latitude, longitude, city, country, place_nam
         'country': country,
         'place_name': place_name,
         'place_id': place_id,
+        'api_key': api_key,
     })
+'''
 
 
 #check if location exists, update count if it does; if not, create location

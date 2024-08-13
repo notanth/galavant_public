@@ -11,8 +11,6 @@ class Trip(models.Model):
     def __str__(self):
         return self.trip_name
 
-
-
 class Location(models.Model):
     """Cache table for google maps API"""
     latitude = models.DecimalField(max_digits=12, decimal_places=9,

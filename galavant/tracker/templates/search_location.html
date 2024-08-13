@@ -17,8 +17,18 @@
     hx-target="#search-results"
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-  <!-- <div id="search-results"> -->
+  
   <table id="search-results">
+  </table>
+  <!--
+  <div>
+    {% include 'location_table_partial.html' %}
+  </div>
+  -->
+
+   <!--
+  <table id="search-results">
+    {{ location_options|length }}
     {% for option in location_options %}
       <tr>
         {% for item in option %}
@@ -26,6 +36,6 @@
         {% endfor %}
       </tr>
     {% endfor %}
-</table>
-  
+  </table>
+  -->
 {% endblock %}
