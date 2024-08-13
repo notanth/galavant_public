@@ -90,7 +90,7 @@ def update_profile(request, user_id):
 '''
 #object for storing location info, bad practice to use same name as model?
 @dataclass
-class Location:
+class LocationDetails:
     latitude: float
     longitude: float
     city: str
@@ -98,7 +98,10 @@ class Location:
     place_name: str
     place_id: str
 
-def store_location_data(location: Location):
+    #create method __post__ init:
+        data cleaning and/or creating city and country fields 
+
+def store_location_data(location: LocationDetails):
     latitude=result['geometry']['location']['lat']
 '''
 
@@ -113,10 +116,11 @@ def search_location_initial(request):
         if data['status'] == 'OK':
             result = data['candidates'][0]
             #named tuple or data class object to pass 
-            #named 
             #embed object and remove save_location_preivew
             return render(request, 'save_location_preview.html',
-                          {})
+                          {location: LocationDetails})
+            # pass in instance of dataclass here
+            # location_details = LocationDetails(arg1=..., arg2=..., etc)
             '''
                 latitude=result['geometry']['location']['lat'],
                 longitude=result['geometry']['location']['lng'],
@@ -161,6 +165,7 @@ def search_location(request):
                 'error': 'Failed to retrieve location info. Please try again.',
             })
     return render(request, 'search_location.html')
+
 """
 <tr><td><a href...>location</a></td></tr>
 from django.urls import reverse
