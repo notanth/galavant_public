@@ -263,7 +263,9 @@ def location_saved(request):
     return render(request, 'location_saved.html')
 
 # view to update location-traveler trip name
-
+def location_user_update(request, pk):
+    location_user = LocationUser.objects.get(pk=pk)
+    return render(request, 'locationuser_row.html', {'location_user': location_user})
 
 
 #location user list view to be editable
