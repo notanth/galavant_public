@@ -24,6 +24,7 @@ urlpatterns = [
     path('search_location/<str:location>/', views.search_location, name='search_location'),
     path('save_location/', views.save_location, name='save_location'),
     path('autocomplete/', views.autocomplete, name='autocomplete'),
+    path('my_locations/', views.location_user_list, name='location_user_list'),
 
     path('search_initial/', views.search_location_initial, name='search_location_initial'),
     #path('save_location_preview/<str:latitude>/<str:longitude>/<str:city>/<str:country>/<str:place_name>/<str:place_id>/', views.save_location_preview, name='save_location_preview'),

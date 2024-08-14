@@ -1,0 +1,37 @@
+{%  extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Location Traveler {% endblock %}
+<!-- based on location user table, only show those locations saved by a user-->
+
+{% block content %}
+
+    <h1>My Locations</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Trip</th>
+                <th>Been to before</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location_user in location_users %}
+                <tr>
+                    <td>{{ location_user.name }}</td>
+                    <td>{{ location_user.location.place_name }}</td>
+                    <td>{{ location_user.trip.name }}</td>
+                    <td>{{ location_user.been_to_before|yesno:"Yes,No" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No locations found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

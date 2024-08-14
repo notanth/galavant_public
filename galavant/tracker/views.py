@@ -266,6 +266,11 @@ def location_saved(request):
 
 
 
+#location user list view to be editable
+def location_user_list(request):
+    location_users = LocationUser.objects.filter(user=request.user)
+    return render(request, 'locationuser_list.html', {'location_users': location_users})
+
 
 #plotting all locations regardless of user
 def plot_locations(request):
