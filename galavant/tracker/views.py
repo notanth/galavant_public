@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 from tracker.models import Location, Trip, LocationUser
 from tracker.forms import LocationCreateForm, TripCreateForm
 from django.views.generic import ListView
@@ -136,7 +137,7 @@ def search_location_initial(request):
             })
     return render(request, 'search_initial.html')
 
-def search_location(request):
+def search_location(request, location):
     if request.method == 'POST':
         location = request.POST.get('location')
         url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
@@ -186,36 +187,37 @@ def autocomplete(request):
     for location in data['predictions']:
         location_options.append(location['description'])
     print(location_options)
-    print(len(location_options))
+    #print(len(location_options))
     location_html_table = """
             <tr>
-                <th>Location Options</th>
+                <th>Suggested Location Options</th>
             </tr>
             {}
     """
-    #django function to create url for links 
     #from django.urls import reverse (name of link in urls.py)
-    """bites/models.py
+    
+    rows = ""
+    for location in location_options:
+        search_location_url=reverse('search_location', args=[location])
+        rows += """
+            <tr>
+                <td>{}<a href="{}"</a>{}</td>
+            </tr>
+        """.format(search_location_url, location)
+
+    location_html_table = location_html_table.format(rows)
+
+    return HttpResponse(location_html_table, content_type='text/plain')
+
+"""bites/models.py
         from django.urls import reverse
         tips_link = reverse('tips')
         search_location/
         """
-    
-    rows = ""
-    for location in location_options:
-        rows += """
-        
-            <tr>
-                <td><a href='/search_results'</a>></td>
-            </tr>
-        """.format(location, location)
-
-    location_html_table = location_html_table.format(rows)
 
     # todo: parse and make table rows table row and table cell; add column with ajax action to handle the checkbox
     # table cell with a link to save to pass that along
     #return render(request, 'location_table_partial.html', {'location_html_table': location_html_table})
-    return HttpResponse(location_html_table, content_type='text/plain')
 
 #merge arguments to one object
 '''
