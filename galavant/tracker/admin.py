@@ -16,7 +16,7 @@ class LocationUserAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['place_name', 'place_id', 'date_created', 'country', 'city', 'date_updated']
+    list_display = ['place_name', 'place_id', 'date_created', 'country', 'city', 'total_location_saves', 'date_updated']
     search_field = ['place_name']
 
 

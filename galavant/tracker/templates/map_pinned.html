@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {{ map|safe }}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function copyCoordinates(latitude, longitude) {
+                navigator.clipboard.writeText(`${latitude}, ${longitude}`);
+                alert("Coordinates copied to clipboard!");
+            }
+        });
+    </script>
+
+{% endblock %}

@@ -1,26 +1,42 @@
-
-
-{%  extends "base.html" %}
+{% extends "base.html" %}
 
 {% load static %}
 
-<head><link rel="stylesheet" href="{% static 'base.css' %}" ></head>
+{% block extra_head %}
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
+{% endblock %}
 
 {% block title %}Locations {% endblock %}
 
 {% block content %}
 
-    <head>
-        <title>Search Location</title>
-        <script src="https://unpkg.com/htmx.org@1.8.0/dist/htmx.min.js"></script>
-    </head>
-    <body>
-        <form hx-post="/search_location/" hx-target="#search-results">
-            {% csrf_token %}
-            <input type="text" name="location" placeholder="Enter a location">
-            <button type="submit">Search Location</button>
-        </form>
-        <div id="search-results"></div>
-    </body>
+  <input class="form-control" type="search"
+    id="location" name="location" placeholder="Enter a location"
+    hx-post="{% url 'autocomplete' %}"
+    hx-trigger="input changed delay:500ms, search"
+    hx-target="#search-results"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
+  
+  <table id="search-results">
+  </table>
+  
+  <!--
+  <div>
+    {% include 'location_table_partial.html' %}
+  </div>
+  -->
+
+   <!--
+  <table id="search-results">
+    {{ location_options|length }}
+    {% for option in location_options %}
+      <tr>
+        {% for item in option %}
+          <td>{{ item }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+  -->
 {% endblock %}

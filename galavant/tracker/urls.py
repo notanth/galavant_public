@@ -22,12 +22,14 @@ urlpatterns = [
     path('createtrip/', views.create_trip, name='create_trip'),
     path('search_location/', views.search_location, name='search_location'),
     path('save_location/', views.save_location, name='save_location'),
+    path('autocomplete/', views.autocomplete, name='autocomplete'),
 
     path('search_initial/', views.search_location_initial, name='search_location_initial'),
-    path('save_location_preview/<str:latitude>/<str:longitude>/<str:city>/<str:country>/<str:place_name>/<str:place_id>/', views.save_location_preview, name='save_location_preview'),
+    #path('save_location_preview/<str:latitude>/<str:longitude>/<str:city>/<str:country>/<str:place_name>/<str:place_id>/', views.save_location_preview, name='save_location_preview'),
     path('save_location/', views.save_location, name='save_location'),
     path('subscribe/', views.pricing_page_view, name='pricing_page_view'),
     path('location_saved/', views.location_saved, name='location_saved'),
-
+    path('map_pinned/', views.plot_locations, name='plot_locations'),
+    path('heatmap/', views.plot_heatmap, name='plot_heatmap'),
     
 ]

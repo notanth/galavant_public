@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
-#from dj_database_url import parse as db_url
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     # may need to re-add this below
     #'htmx.middleware.HTMXMiddleware',
-    
+
 ]
 
 SITE_ID = 1
@@ -129,14 +129,9 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'galavantdb',
-        'USER': 'anthonyc',
-        'PASSWORD': 'KbA3#8L!J4E',
-        "HOST": "127.0.0.1",
-        "PORT": "",
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 

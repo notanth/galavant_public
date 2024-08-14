@@ -6,6 +6,8 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" >
+    <script src="https://unpkg.com/htmx.org@1.8.0/dist/htmx.min.js"></script>
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
   <!-- Header Section -->
@@ -27,8 +29,11 @@
         <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
         <li class="nav-item"><a href="{% url 'create_location' %}" class="nav-link">Create Location</a></li>
         <li class="nav-item"><a href="{% url 'create_trip' %}" class="nav-link">Create Trip</a></li>
-        <li class="nav-item"><a href="{% url 'location_list' %}" class="nav-link">Location List</a></li>
+        <li class="nav-item"><a href="{% url 'location_list' %}" class="nav-link">Location List - All Users</a></li>
+        <!-- add view of location - user specific only; to add htmx so user can edit trip name-->
         <li class="nav-item"><a href="{% url 'trip_list' %}" class="nav-link">Trip List</a></li>
+        <li class="nav-item"><a href="{% url 'plot_locations' %}" class="nav-link">All Locations!! (Pinned)</a></li>
+        <li class="nav-item"><a href="{% url 'plot_heatmap' %}" class="nav-link">All Locations!! (Heatmap)</a></li>
         <li class="nav-item"><a href="{% url 'search_location_initial' %}" class="nav-link">Search for a location! (old)</a></li>
         <li class="nav-item"><a href="{% url 'search_location' %}" class="nav-link">Search for a location! (new view)</a></li>
         <li class="nav-item"><a href="{% url 'pricing_page_view' %}" class="nav-link">Subscribe via Stripe!</a></li>
@@ -41,11 +46,11 @@
     <div class="block-content-wrapper">
       <div class="container">
         {% block content %}
-        
+
         {% endblock %}
       </div>
     </div>
   </section>
-  
+
 </body>
 </html>
