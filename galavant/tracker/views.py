@@ -179,8 +179,9 @@ def autocomplete(request):
     data = response.json()
     location_options = []
     for location in data['predictions']:
+        print(location)
         location_options.append(location['description'])
-    print(location_options)
+    print("Locations_options are: ", location_options)
     location_html_table = """
             <tr>
                 <th>Suggested Location Options</th>
