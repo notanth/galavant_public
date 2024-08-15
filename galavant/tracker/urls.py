@@ -26,7 +26,7 @@ urlpatterns = [
     path('autocomplete/', views.autocomplete, name='autocomplete'),
     path('my_locations/', views.location_user_list, name='location_user_list'),
     path('my_locations/<pk>/update/', views.location_user_update, name='location_user_update'),
-
+    path('my_locations/<pk>/edit/', views.location_user_edit, name='location_user_edit'),
     path('search_initial/', views.search_location_initial, name='search_location_initial'),
     #path('save_location_preview/<str:latitude>/<str:longitude>/<str:city>/<str:country>/<str:place_name>/<str:place_id>/', views.save_location_preview, name='save_location_preview'),
     path('save_location/', views.save_location, name='save_location'),

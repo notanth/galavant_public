@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from tracker.models import Location, Trip, LocationUser
-from tracker.forms import LocationCreateForm, TripCreateForm
+from tracker.forms import LocationCreateForm, TripCreateForm, LocationUserForm
 from django.views.generic import ListView
 from django.views import View
 from datetime import datetime
@@ -137,6 +137,7 @@ def search_location_initial(request):
             })
     return render(request, 'search_initial.html')
 
+@login_required
 def search_location(request, location=None):
     url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
     response = requests.get(url)
@@ -201,7 +202,7 @@ def autocomplete(request):
 
     return HttpResponse(location_html_table, content_type='text/plain')
 
-"""bites/models.py
+    """bites/models.py
         from django.urls import reverse
         tips_link = reverse('tips')
         search_location/
@@ -228,6 +229,7 @@ def save_location_preview(request, latitude, longitude, city, country, place_nam
 
 #check if location exists, update count if it does; if not, create location
 #create location user object when save_location
+@login_required
 def save_location(request):
     print(request.POST)
     if request.method == 'POST':
@@ -259,20 +261,34 @@ def save_location(request):
         return redirect('location_saved')
     return redirect('search_location')
 
+@login_required
 def location_saved(request):
     return render(request, 'location_saved.html')
 
 # view to update location-traveler trip name
+@login_required
 def location_user_update(request, pk):
     location_user = LocationUser.objects.get(pk=pk)
-    return render(request, 'locationuser_row.html', {'location_user': location_user})
+    return render(request, '_locationuser_row.html', {'location_user': location_user})
 
 
 #location user list view to be editable
+@login_required
 def location_user_list(request):
     location_users = LocationUser.objects.filter(user=request.user)
     return render(request, 'locationuser_list.html', {'location_users': location_users})
 
+# should allow for row editing with htmx?
+@login_required
+def location_user_update(request, pk):
+    location_user = LocationUser.objects.get(pk=pk)
+    return render(request, '_locationuser_row.html', {'location_user': location_user})
+
+@login_required
+def location_user_edit(request, pk):
+    location_user = LocationUser.objects.get(pk=pk)
+    form = LocationUserForm(instance=location_user)
+    return render(request, '_locationuser_form.html', {'form': form})
 
 #plotting all locations regardless of user
 def plot_locations(request):
