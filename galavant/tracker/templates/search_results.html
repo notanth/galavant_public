@@ -15,12 +15,12 @@
         <th>Place ID</th>
     </tr>
     <tr>
-        <td>{{ latitude }}</td>
-        <td>{{ longitude }}</td>
-        <td>{{ city }}</td>
-        <td>{{ country }}</td>
-        <td>{{ place_name }}</td>
-        <td>{{ place_id }}</td>
+        <td>{{ location_details.latitude }}</td>
+        <td>{{ location_details.longitude }}</td>
+        <td>{{ location_details.city }}</td>
+        <td>{{ location_details.country }}</td>
+        <td>{{ location_details.place_name }}</td>
+        <td>{{ location_details.place_id }}</td>
     </tr>
 </table>
 <div id="map" style="width: 500px; height: 300px;"></div>
@@ -40,12 +40,12 @@
     
 <form hx-post="/save_location/" hx-target="#search-results">
     {% csrf_token %}
-    <input type="hidden" name="place_id" value="{{ place_id }}">
-    <input type="hidden" name="place_name" value="{{ place_name }}">
-    <input type="hidden" name="lat" value="{{ latitude }}">
-    <input type="hidden" name="lng" value="{{ longitude }}">
-    <input type="hidden" name="city" value="{{ city }}">
-    <input type="hidden" name="country" value="{{ country }}">
+    <input type="hidden" name="place_id" value="{{ location_details.place_id }}">
+    <input type="hidden" name="place_name" value="{{ location_details.place_name }}">
+    <input type="hidden" name="lat" value="{{ location_details.latitude }}">
+    <input type="hidden" name="lng" value="{{ location_details.longitude }}">
+    <input type="hidden" name="city" value="{{ location_details.city }}">
+    <input type="hidden" name="country" value="{{ location_details.country }}">
     <button type="submit">Save Location</button>
 </form>
 

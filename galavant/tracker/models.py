@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from dataclasses import dataclass
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -29,6 +30,15 @@ class Location(models.Model):
     def __str__(self):
         return self.place_name
 
+
+@dataclass
+class LocationDetails:
+    latitude: float
+    longitude: float
+    city: str
+    country: str
+    place_name: str
+    place_id: str
 
 class LocationUser(models.Model):
     name = models.CharField(max_length=50, blank=False) #if user wants to give a custom name, default to place_name

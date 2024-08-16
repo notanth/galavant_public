@@ -4,7 +4,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from tracker.models import Location, Trip, LocationUser
+from tracker.models import Location, Trip, LocationUser, LocationDetails
 from tracker.forms import LocationCreateForm, TripCreateForm, ProfileUpdateForm, UserUpdateForm
 from django.views.generic import ListView
 from django.views import View
@@ -154,13 +154,14 @@ def search_location_initial(request):
     return render(request, 'search_initial.html')
 
 @login_required
-def search_location(request, location=None):
+def search_location(request, location=Location):
     url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
     response = requests.get(url)
     data = response.json()
     print(data)
     if data['status'] == 'OK':
         place_id = data['candidates'][0]['place_id']
+        print("place id is: ", place_id)
         place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=address_component&key={api_key}'
         place_details_response = requests.get(place_details_url)
         place_details_data = place_details_response.json()
@@ -196,7 +197,7 @@ def autocomplete(request):
     data = response.json()
     location_options = []
     for location in data['predictions']:
-        print(location)
+        #print("Location option:", location)
         location_options.append(location['description'])
     print("Locations_options are: ", location_options)
     location_html_table = """
