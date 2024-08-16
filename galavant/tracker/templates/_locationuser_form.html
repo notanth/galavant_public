@@ -1,0 +1,4 @@
+<form hx-post="{% url 'location_user_update' location_user.pk %}" hx-target="#location-user-table-body" hx-swap="outerHTML">
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
