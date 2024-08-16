@@ -10,6 +10,8 @@
 
 {% block content %}
 
+  <h2>Search for a location below!</h2>
+
   <input class="form-control" type="search"
     id="location" name="location" placeholder="Enter a location"
     hx-post="{% url 'autocomplete' %}"
@@ -21,11 +23,7 @@
   <table id="search-results">
   </table>
   
-  <!--
-  <div>
-    {% include 'location_table_partial.html' %}
-  </div>
-  -->
+  
 
    <!--
   <table id="search-results">

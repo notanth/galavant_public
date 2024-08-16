@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from tracker.models import Location, Trip, Profile
+from tracker.models import Location, Trip, Profile, LocationUser
 
 
 class LocationCreateForm(forms.ModelForm):
@@ -31,18 +31,6 @@ class TripCreateForm(forms.ModelForm):
         if Trip.objects.filter(user=self.request.user, trip_name=trip_name).exists():
             raise ValidationError('You have already created a trip with this name.')
         return trip_name
-
-# will this affect login if email is changed...?
-class UserUpdateForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
-
-
-class ProfileUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ['nickname', 'twitter_handle', 'bio']
 
 
 #class SearchLocationForm():

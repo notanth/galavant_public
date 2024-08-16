@@ -32,6 +32,8 @@
         <li class="nav-item"><a href="{% url 'create_trip' %}" class="nav-link">Create Trip</a></li>
         <li class="nav-item"><a href="{% url 'location_list' %}" class="nav-link">Location List - All Users</a></li>
         <!-- add view of location - user specific only; to add htmx so user can edit trip name-->
+
+        <li class="nav-item"><a href="{% url 'location_user_list' %}" class="nav-link">My Location List</a></li>
         <li class="nav-item"><a href="{% url 'trip_list' %}" class="nav-link">Trip List</a></li>
         <li class="nav-item"><a href="{% url 'plot_locations' %}" class="nav-link">All Locations!! (Pinned)</a></li>
         <li class="nav-item"><a href="{% url 'plot_heatmap' %}" class="nav-link">All Locations!! (Heatmap)</a></li>
