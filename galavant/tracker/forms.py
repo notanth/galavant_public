@@ -9,6 +9,10 @@ class LocationCreateForm(forms.ModelForm):
         model = Location
         fields = '__all__'
 
+class LocationUserForm(forms.ModelForm):
+    class Meta:
+        model = LocationUser
+        fields = ('name', 'location', 'trip', 'been_to_before')
 
 class TripCreateForm(forms.ModelForm):
     class Meta:

@@ -1,4 +1,4 @@
-{%  extends "base.html" %}
+{% extends "base.html" %}
 
 {% load static %}
 
@@ -19,15 +19,15 @@
             <th>Edit</th>
         </tr>
     </thead>
-    <tbody id="location-user-table-body" hx-target="this">
+    <tbody id="location-user-table-body">
         {% for location_user in location_users %}
-            <tr hx-get="{% url 'location_user_update' location_user.pk %}" hx-trigger="load">
+            <tr id="location-user-row-{{ location_user.pk }}" hx-get="{% url 'location_user_update' location_user.pk %}" hx-trigger="load">
                 <td>{{ location_user.name }}</td>
                 <td>{{ location_user.location.place_name }}</td>
                 <td>{{ location_user.trip.name }}</td>
                 <td>{{ location_user.been_to_before|yesno:"Yes,No" }}</td>
                 <td>
-                    <button hx-get="{% url 'location_user_edit' location_user.pk %}" hx-target="#location-user-form" hx-swap="outerHTML">
+                    <button hx-get="{% url 'location_user_edit' pk=location_user.pk %}" hx-target="#location-user-row-{{ location_user.pk }}" hx-swap="outerHTML" hx-trigger="click">
                         Edit
                     </button>
                 </td>

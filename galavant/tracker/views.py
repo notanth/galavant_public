@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from tracker.models import Location, Trip, LocationUser, LocationDetails
-from tracker.forms import LocationCreateForm, TripCreateForm, ProfileUpdateForm, UserUpdateForm
+from tracker.forms import LocationCreateForm, TripCreateForm, ProfileUpdateForm, UserUpdateForm, LocationUserForm
 from django.views.generic import ListView
 from django.views import View
 from datetime import datetime
@@ -252,10 +252,12 @@ def save_location(request):
         instance, created = Location.objects.get_or_create(
             latitude=location_details.latitude,
             longitude=location_details.longitude,
-            city=location_details.city,
-            country=location_details.country,
             place_name=location_details.place_name,
-            place_id=location_details.place_id
+            place_id=location_details.place_id,
+            defaults={
+                'city': location_details.city or '',
+                'country': location_details.country or '',
+            }
         )
         print("Location instance:", instance.__dict__)
         if not created:
@@ -274,16 +276,11 @@ def save_location(request):
         return redirect('location_saved')
     return redirect('search_location')
 
+
 @login_required
 def location_saved(request):
     locations = Location.objects.all()
     return render(request, 'location_saved.html', {'locations': locations})
-
-# view to update location-traveler trip name
-@login_required
-def location_user_update(request, pk):
-    location_user = LocationUser.objects.get(pk=pk)
-    return render(request, '_locationuser_row.html', {'location_user': location_user})
 
 
 #location user list view to be editable
@@ -300,6 +297,7 @@ def location_user_update(request, pk):
 
 @login_required
 def location_user_edit(request, pk):
+    print("location_user_edit activated !")
     location_user = LocationUser.objects.get(pk=pk)
     form = LocationUserForm(instance=location_user)
     return render(request, '_locationuser_form.html', {'form': form})
