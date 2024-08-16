@@ -4,7 +4,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from tracker.models import Location, Trip, LocationUser
-from tracker.forms import LocationCreateForm, TripCreateForm
+from tracker.forms import LocationCreateForm, TripCreateForm, ProfileUpdateForm, UserUpdateForm
 from django.views.generic import ListView
 from django.views import View
 from datetime import datetime
@@ -81,13 +81,27 @@ def create_trip(request):
         form = TripCreateForm(request=request)  # Pass request to form
     return render(request, 'createtrip.html', {'form': form})
 
+#update stripe info upon subscription
 @login_required
-def update_profile(request, user_id):
-    user = User.objects.get(pk=user_id)
-    #user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
-    #create form and view to let user load and update data
-    #update stripe info upon subscription
-    user.save()
+def update_profile(request):
+    user = request.user
+    if request.user != user:
+        return redirect('home')  # or any other page you want to redirect to
+
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=user)
+        profile_form = ProfileUpdateForm(request.POST, instance=user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('profile_updated')  # redirect to a success page
+    else:
+        user_form = UserUpdateForm(instance=user)
+        profile_form = ProfileUpdateForm(instance=user.profile)
+    return render(request, 'update_profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
+def profile_updated(request):
+    return render(request, 'profile_updated.html')
 
 '''
 #object for storing location info, bad practice to use same name as model?
