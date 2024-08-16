@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 from tracker.models import Location, Trip, LocationUser
-from tracker.forms import LocationCreateForm, TripCreateForm
+from tracker.forms import LocationCreateForm, TripCreateForm, LocationUserForm
 from django.views.generic import ListView
 from django.views import View
 from datetime import datetime
@@ -138,35 +139,31 @@ def search_location_initial(request):
             })
     return render(request, 'search_initial.html')
 
-def search_location(request):
-    if request.method == 'POST':
-        location = request.POST.get('location')
-        url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
-        response = requests.get(url)
-        data = response.json()
-        print(data)
-        if data['status'] == 'OK':
-            place_id = data['candidates'][0]['place_id']
-            place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=address_component&key={api_key}'
-            place_details_response = requests.get(place_details_url)
-            place_details_data = place_details_response.json()
-            result = place_details_data['result']
-            #create place object ; render should not do all of this logic
-            return render(request, 'search_results.html', {
-                'latitude': data['candidates'][0]['geometry']['location']['lat'],
-                'longitude': data['candidates'][0]['geometry']['location']['lng'],
-                #helper function to de-duplicate or use a method for constructor dunder dunder post init data class
-                'city': [component['long_name'] for component in result['address_components'] if 'locality' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'locality' in component['types']] else None,
-                'country': [component['long_name'] for component in result['address_components'] if 'country' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'country' in component['types']] else None,
-                'place_name': data['candidates'][0]['name'],
-                'place_id': place_id,
-                'api_key': api_key,
-            })
-        else:
-            return render(request, 'search_location.html', {
-                'error': 'Failed to retrieve location info. Please try again.',
-            })
-    return render(request, 'search_location.html')
+@login_required
+def search_location(request, location=None):
+    url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
+    response = requests.get(url)
+    data = response.json()
+    print(data)
+    if data['status'] == 'OK':
+        place_id = data['candidates'][0]['place_id']
+        place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=address_component&key={api_key}'
+        place_details_response = requests.get(place_details_url)
+        place_details_data = place_details_response.json()
+        result = place_details_data['result']
+        return render(request, 'search_results.html', {
+            'latitude': data['candidates'][0]['geometry']['location']['lat'],
+            'longitude': data['candidates'][0]['geometry']['location']['lng'],
+            'city': [component['long_name'] for component in result['address_components'] if 'locality' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'locality' in component['types']] else None,
+            'country': [component['long_name'] for component in result['address_components'] if 'country' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'country' in component['types']] else None,
+            'place_name': data['candidates'][0]['name'],
+            'place_id': place_id,
+            'api_key': api_key,
+        })
+    else:
+        return render(request, 'search_location.html', {
+            'error': 'Failed to retrieve location info. Please try again.',
+        })
 
 """
 <tr><td><a href...>location</a></td></tr>
@@ -183,41 +180,39 @@ def autocomplete(request):
     url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_val}&key={api_key}'
     response = requests.get(url)
     data = response.json()
-    #print(data)
     location_options = []
     for location in data['predictions']:
+        print(location)
         location_options.append(location['description'])
-    print(location_options)
-    print(len(location_options))
+    print("Locations_options are: ", location_options)
     location_html_table = """
             <tr>
-                <th>Location Options</th>
+                <th>Suggested Location Options</th>
             </tr>
             {}
     """
-    #django function to create url for links 
-    #from django.urls import reverse (name of link in urls.py)
+    rows = ""
+    for location in location_options:
+        search_location_url = reverse('search_location', args=[location])
+        rows += """
+            <tr>
+                <td><a href="{}">{}</a></td>
+            </tr>
+        """.format(search_location_url, location)
+
+    location_html_table = location_html_table.format(rows)
+
+    return HttpResponse(location_html_table, content_type='text/plain')
+
     """bites/models.py
         from django.urls import reverse
         tips_link = reverse('tips')
         search_location/
         """
-    
-    rows = ""
-    for location in location_options:
-        rows += """
-        
-            <tr>
-                <td><a href='/search_results'</a>></td>
-            </tr>
-        """.format(location, location)
-
-    location_html_table = location_html_table.format(rows)
 
     # todo: parse and make table rows table row and table cell; add column with ajax action to handle the checkbox
     # table cell with a link to save to pass that along
     #return render(request, 'location_table_partial.html', {'location_html_table': location_html_table})
-    return HttpResponse(location_html_table, content_type='text/plain')
 
 #merge arguments to one object
 '''
@@ -236,6 +231,7 @@ def save_location_preview(request, latitude, longitude, city, country, place_nam
 
 #check if location exists, update count if it does; if not, create location
 #create location user object when save_location
+@login_required
 def save_location(request):
     print(request.POST)
     if request.method == 'POST':
@@ -267,13 +263,34 @@ def save_location(request):
         return redirect('location_saved')
     return redirect('search_location')
 
+@login_required
 def location_saved(request):
     return render(request, 'location_saved.html')
 
 # view to update location-traveler trip name
+@login_required
+def location_user_update(request, pk):
+    location_user = LocationUser.objects.get(pk=pk)
+    return render(request, '_locationuser_row.html', {'location_user': location_user})
 
 
+#location user list view to be editable
+@login_required
+def location_user_list(request):
+    location_users = LocationUser.objects.filter(user=request.user)
+    return render(request, 'locationuser_list.html', {'location_users': location_users})
 
+# should allow for row editing with htmx?
+@login_required
+def location_user_update(request, pk):
+    location_user = LocationUser.objects.get(pk=pk)
+    return render(request, '_locationuser_row.html', {'location_user': location_user})
+
+@login_required
+def location_user_edit(request, pk):
+    location_user = LocationUser.objects.get(pk=pk)
+    form = LocationUserForm(instance=location_user)
+    return render(request, '_locationuser_form.html', {'form': form})
 
 #plotting all locations regardless of user
 def plot_locations(request):

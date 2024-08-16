@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from tracker.models import Location, Trip
+from tracker.models import Location, Trip, LocationUser
 
 
 class LocationCreateForm(forms.ModelForm):
@@ -31,6 +31,17 @@ class TripCreateForm(forms.ModelForm):
         if Trip.objects.filter(user=self.request.user, trip_name=trip_name).exists():
             raise ValidationError('You have already created a trip with this name.')
         return trip_name
+
+class LocationUserForm(forms.ModelForm):
+    class Meta:
+        model = LocationUser
+        fields = ('name', 'location', 'trip', 'been_to_before')
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'location': forms.Select(attrs={'class': 'form-control'}),
+            'trip': forms.Select(attrs={'class': 'form-control'}),
+            'been_to_before': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
 
 
 #class SearchLocationForm():
