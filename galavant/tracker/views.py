@@ -292,6 +292,7 @@ def location_user_list(request):
 # should allow for row editing with htmx?
 @login_required
 def location_user_update(request, pk):
+    print("location_user_update activated !")
     location_user = LocationUser.objects.get(pk=pk)
     return render(request, '_locationuser_row.html', {'location_user': location_user})
 
@@ -314,6 +315,30 @@ def plot_locations(request):
         ).add_to(map)
     map = map._repr_html_()
     return render(request, 'map_pinned.html', {'map': map})
+
+#plot locations only for one user
+@login_required
+def my_locations_plot(request):
+    if request.user.is_authenticated:
+        # Get locations associated with the logged-in user
+        user_locations = LocationUser.objects.filter(user=request.user)
+        
+        # Get location data from the Location model
+        locations = Location.objects.filter(id__in=user_locations.values_list('location_id', flat=True))
+        
+        # Plot locations
+        map = folium.Map(location=[15, 0], zoom_start=2)
+        for location in locations:
+            folium.Marker(
+                [location.latitude, location.longitude],
+                tooltip=location.place_name,
+                #popup=location.place_name
+            ).add_to(map)
+        map = map._repr_html_()
+        
+        return render(request, 'locationuser_map.html', {'map': map})
+    else:
+        return redirect('login')  # Redirect to login page if user is not authenticated
 
 
 #heatmap of all locations

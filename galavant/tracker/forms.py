@@ -30,6 +30,7 @@ class TripCreateForm(forms.ModelForm):
             instance.save()
         return instance
 
+    # abstract in the class method OR make unique_together in the model tripname-user
     def clean_trip_name(self):
         trip_name = self.cleaned_data['trip_name']
         if Trip.objects.filter(user=self.request.user, trip_name=trip_name).exists():

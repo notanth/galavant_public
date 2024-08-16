@@ -25,21 +25,29 @@
     <nav id="nav-secondary" class="nav-secondary-container">
       <ul id="nav-list-secondary" class="nav-list-secondary">
         <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'search_location' %}" class="nav-link">Search for a location! (w/ Autocomplete)</a></li>
+        <li class="nav-item"><a href="{% url 'create_trip' %}" class="nav-link">Create Trip</a></li>
+        <li class="nav-item"><a href="{% url 'location_user_list' %}" class="nav-link">My Location List</a></li>
+        <li class="nav-item"><a href="{% url 'location_list' %}" class="nav-link">Location List - All Users</a></li>
+        <li class="nav-item"><a href="{% url 'trip_list' %}" class="nav-link">My Trip List</a></li>
+        <li class="nav-item"><a href="{% url 'plot_locations' %}" class="nav-link">All Locations!! (Pinned)</a></li>
+        <li class="nav-item"><a href="{% url 'my_locations_plot' %}" class="nav-link">My Locations Map</a></li>
+        <li class="nav-item"><a href="{% url 'plot_heatmap' %}" class="nav-link">All Locations!! (Heatmap)</a></li>
+        <li class="nav-item"><a href="{% url 'pricing_page_view' %}" class="nav-link">Subscribe via Stripe!</a></li>
+        <li class="nav-item"><a href="{% url 'update_profile' %}" class="nav-link">Update Profile!</a></li>
+
+        <!-- grouping nav items that arent needed for mvp-->
+        <!--
         <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
         <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
-        <li class="nav-item"><a href="{% url 'update_profile' %}" class="nav-link">Update Profile!</a></li>
-        <li class="nav-item"><a href="{% url 'create_location' %}" class="nav-link">Create Location</a></li>
-        <li class="nav-item"><a href="{% url 'create_trip' %}" class="nav-link">Create Trip</a></li>
-        <li class="nav-item"><a href="{% url 'location_list' %}" class="nav-link">Location List - All Users</a></li>
-        <!-- add view of location - user specific only; to add htmx so user can edit trip name-->
+        -->
 
-        <li class="nav-item"><a href="{% url 'location_user_list' %}" class="nav-link">My Location List</a></li>
-        <li class="nav-item"><a href="{% url 'trip_list' %}" class="nav-link">Trip List</a></li>
-        <li class="nav-item"><a href="{% url 'plot_locations' %}" class="nav-link">All Locations!! (Pinned)</a></li>
-        <li class="nav-item"><a href="{% url 'plot_heatmap' %}" class="nav-link">All Locations!! (Heatmap)</a></li>
+        <!-- grouping nav items that are no longer needed due to changes-->
+        <!--
+        <li class="nav-item"><a href="{% url 'create_location' %}" class="nav-link">Create Location</a></li>
         <li class="nav-item"><a href="{% url 'search_location_initial' %}" class="nav-link">Search for a location! (old)</a></li>
-        <li class="nav-item"><a href="{% url 'search_location' %}" class="nav-link">Search for a location! (new view)</a></li>
-        <li class="nav-item"><a href="{% url 'pricing_page_view' %}" class="nav-link">Subscribe via Stripe!</a></li>
+        -->
+
       </ul>
     </nav>
   </header>
