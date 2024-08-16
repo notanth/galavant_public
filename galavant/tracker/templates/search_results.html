@@ -27,25 +27,19 @@
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: {{ latitude }}, lng: {{ longitude }}},
+                center: {lat: {{ location_details.latitude }}, lng: {{ location_details.longitude }}},
                 zoom: 10
             });
             var marker = new google.maps.Marker({
-                position: {lat: {{ latitude }}, lng: {{ longitude }}},
+                position: {lat: {{ location_details.latitude }}, lng: {{ location_details.longitude }}},
                 map: map
             });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap"></script>
     
-<form hx-post="/save_location/" hx-target="#search-results">
+<form method="post" action="/save_location/">
     {% csrf_token %}
-    <input type="hidden" name="place_id" value="{{ location_details.place_id }}">
-    <input type="hidden" name="place_name" value="{{ location_details.place_name }}">
-    <input type="hidden" name="lat" value="{{ location_details.latitude }}">
-    <input type="hidden" name="lng" value="{{ location_details.longitude }}">
-    <input type="hidden" name="city" value="{{ location_details.city }}">
-    <input type="hidden" name="country" value="{{ location_details.country }}">
     <button type="submit">Save Location</button>
 </form>
 

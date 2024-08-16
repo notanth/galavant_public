@@ -105,21 +105,8 @@ def profile_updated(request):
     return render(request, 'profile_updated.html')
 
 '''
-#object for storing location info, bad practice to use same name as model?
-@dataclass
-class LocationDetails:
-    latitude: float
-    longitude: float
-    city: str
-    country: str
-    place_name: str
-    place_id: str
-
     #create method __post__ init:
         data cleaning and/or creating city and country fields 
-
-def store_location_data(location: LocationDetails):
-    latitude=result['geometry']['location']['lat']
 '''
 
 def search_location_initial(request):
@@ -159,27 +146,34 @@ def search_location(request, location=Location):
     response = requests.get(url)
     data = response.json()
     print(data)
-    if data['status'] == 'OK':
+    if data['status'] == 'OK' and data['candidates']:
         place_id = data['candidates'][0]['place_id']
         print("place id is: ", place_id)
         place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=address_component&key={api_key}'
         place_details_response = requests.get(place_details_url)
         place_details_data = place_details_response.json()
         result = place_details_data['result']
+        print("result of place details data is: ", result)
+        location_details = LocationDetails(
+            latitude=data['candidates'][0]['geometry']['location']['lat'],
+            longitude=data['candidates'][0]['geometry']['location']['lng'],
+            city = next((component['long_name'] for component in result['address_components'] if 'locality' in component['types']), None),
+            country = next((component['long_name'] for component in result['address_components'] if 'country' in component['types']), None),
+            place_name=data['candidates'][0]['name'],
+            place_id=place_id,
+        )
+        print("location_details for search_results : ", location_details)
+        request.session['location_details'] = location_details.__dict__
         return render(request, 'search_results.html', {
-            'latitude': data['candidates'][0]['geometry']['location']['lat'],
-            'longitude': data['candidates'][0]['geometry']['location']['lng'],
-            'city': [component['long_name'] for component in result['address_components'] if 'locality' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'locality' in component['types']] else None,
-            'country': [component['long_name'] for component in result['address_components'] if 'country' in component['types']][0] if [component['long_name'] for component in result['address_components'] if 'country' in component['types']] else None,
-            'place_name': data['candidates'][0]['name'],
-            'place_id': place_id,
+            'location_details': location_details,
             'api_key': api_key,
         })
     else:
         return render(request, 'search_location.html', {
-            'error': 'Failed to retrieve location info. Please try again.',
+            'error': 'No location found. Please try again.',
         })
-
+    
+    
 """
 <tr><td><a href...>location</a></td></tr>
 from django.urls import reverse
@@ -248,39 +242,42 @@ def save_location_preview(request, latitude, longitude, city, country, place_nam
 #create location user object when save_location
 @login_required
 def save_location(request):
-    print(request.POST)
+    print("Save location view called")
     if request.method == 'POST':
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
-        city = request.POST.get('city')
-        country = request.POST.get('country')
-        place_name = request.POST.get('place_name')
-        place_id = request.POST.get('place_id')
-
-        #get or create is working but +=1 if exists is not. need to investigate
+        print("POST request received")
+        location_details = LocationDetails(**request.session.get('location_details', {}))
+        print("Location details:", location_details.__dict__)
+        
+        # Get or create a Location instance
         instance, created = Location.objects.get_or_create(
-            latitude=latitude,
-            longitude=longitude,
-            city=city,
-            country=country,
-            place_name=place_name,
-            place_id=place_id
+            latitude=location_details.latitude,
+            longitude=location_details.longitude,
+            city=location_details.city,
+            country=location_details.country,
+            place_name=location_details.place_name,
+            place_id=location_details.place_id
         )
+        print("Location instance:", instance.__dict__)
         if not created:
-            instance.total_location_saves +=1
+            instance.total_location_saves += 1
+            instance.save()
+            print("Location instance saved")
 
-        LocationUser.objects.get_or_create(
-            name=place_name,
+        # Create a LocationUser instance
+        location_user, created = LocationUser.objects.get_or_create(
+            name=location_details.place_name,
             location=instance,
             user=request.user,
         )
+        print("LocationUser instance:", location_user.__dict__)
 
         return redirect('location_saved')
     return redirect('search_location')
 
 @login_required
 def location_saved(request):
-    return render(request, 'location_saved.html')
+    locations = Location.objects.all()
+    return render(request, 'location_saved.html', {'locations': locations})
 
 # view to update location-traveler trip name
 @login_required
