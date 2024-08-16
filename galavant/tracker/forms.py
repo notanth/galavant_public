@@ -32,5 +32,15 @@ class TripCreateForm(forms.ModelForm):
             raise ValidationError('You have already created a trip with this name.')
         return trip_name
 
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['nickname', 'twitter_handle', 'bio']
+
 
 #class SearchLocationForm():
