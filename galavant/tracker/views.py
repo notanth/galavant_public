@@ -70,13 +70,15 @@ def create_location(request):
 @login_required
 def create_trip(request):
     if request.method == 'POST':
-        form = TripCreateForm(request.POST)
-        print()
+        form = TripCreateForm(request.POST, request=request)
         if form.is_valid():
             form.save()
-            form = TripCreateForm()
+            return redirect('trip_list')
+        else:
+            # Form is not valid, display error message
+            pass  # You can add additional logic here if needed
     else:
-        form = TripCreateForm()
+        form = TripCreateForm(request=request)  # Pass request to form
     return render(request, 'createtrip.html', {'form': form})
 
 @login_required
