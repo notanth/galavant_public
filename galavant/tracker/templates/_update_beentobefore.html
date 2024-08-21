@@ -1,0 +1,6 @@
+<input 
+    type="checkbox" 
+    {% if location_user.been_to_before %}checked{% endif %} 
+    hx-post="/update-been-to-before/{{ location_user.id }}" 
+    hx-target="#been-to-before-{{ location_user.id }}" 
+    hx-swap="outerHTML">

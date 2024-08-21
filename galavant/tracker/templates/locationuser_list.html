@@ -10,39 +10,29 @@
 <h1>My Locations</h1>
 
 <table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Trip</th>
-            <th>Been to before</th>
-            <th>Edit</th>
-        </tr>
-    </thead>
-    <tbody id="location-user-table-body">
-        {% for location_user in location_users %}
-            <tr id="location-user-row-{{ location_user.pk }}" 
-            hx-get="{% url 'location_user_update' location_user.pk %}">
-                <td>{{ location_user.name }}</td>
-                <td>{{ location_user.location.place_name }}</td>
-                <td>{{ location_user.trip.name }}</td>
-                <td>{{ location_user.been_to_before|yesno:"Yes,No" }}</td>
-                <td>
-                    <button hx-get="{% url 'location_user_edit' pk=location_user.pk %}" 
-                        hx-target="#location-user-row-{{ location_user.pk }}" hx-swap="outerHTML" hx-trigger="click">
-                        Edit
-                    </button>
-                </td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="5">No locations found.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
+    {% for location_user in location_users %}
+    <tr>
+        <td>{{ location_user.name }}</td>
+        <td>{{ location_user.location.place_name }}</td>
+        <td>{{ location_user.user.username }}</td>
+        <td>{{ location_user.trip.name }}</td>
+        <td>{{ location_user.been_to_before }}</td>
+        <td>
+            <button hx-get="{% url 'edit_location_user_view' %}?location_user_id={{ location_user.id }}" hx-target="this" hx-swap="outerHTML">Edit</button>
+        </td>
+    </tr>
+    {% empty %}
+    <tr hx-get="{% url 'edit_location_user_view' %}" hx-trigger="load" hx-target="this" hx-swap="outerHTML">
+        <td colspan="6">No data available</td>
+    </tr>
+    {% endfor %}
 </table>
 
-<!-- Edit form container -->
-<div id="location-user-form"></div>
 
 {% endblock %}
+
+
+<!--
+    <tr id="location-user-row-{{ location_user.pk }}" 
+            hx-get="{% url 'location_user_update' location_user.pk %}">
+-->
