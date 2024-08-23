@@ -18,20 +18,22 @@ urlpatterns = [
     #path('geocoding/<int:pk>', GeocodingView.as_view(), name = 'my_geocoding_view'),
     
     path('triplist/', views.trip_list, name='trip_list'),
-    path('createlocation/', views.create_location, name='create_location'),
     path('createtrip/', views.create_trip, name='create_trip'),
     path('search_location/', views.search_location, name='search_location'),
     path('search_location/<str:location>/', views.search_location, name='search_location'),
     path('save_location/', views.save_location, name='save_location'),
     path('autocomplete/', views.autocomplete, name='autocomplete'),
+
+    # assume one of these needs to go or be re-named; one may be poorly named to be user in locationuser table
     path('location_saved/', views.location_saved, name='location_saved'),
+    path('save_location/', views.save_location, name='save_location'),
 
     path('my_locations/', views.location_user_list, name='location_user_list'),
     path('locationlist/', views.location_list, name='location_list'),
+
+    # for htmx to update user-location; re-visit and re-do/fix
     path('edit_location_user/', views.edit_location_user_view, name='edit_location_user_view'),
     path('update_location_user/', views.update_location_user_view, name='update_location_user_view'),
-    
-    path('save_location/', views.save_location, name='save_location'),
 
 
     path('subscribe/', views.pricing_page_view, name='pricing_page_view'),

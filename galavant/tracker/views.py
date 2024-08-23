@@ -22,7 +22,6 @@ from dataclasses import dataclass
 #create constants for api_key & others?
 api_key = config('GOOGLE_API_KEY')
 
-
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -45,7 +44,7 @@ def location_list(request):
     print(locations)
     return render(request, 'locationlist_all.html', {'locations': locations})
 
-
+# trip list specific to logged in user
 @login_required
 def trip_list(request):
     if request.user.is_authenticated:
@@ -54,19 +53,6 @@ def trip_list(request):
         None
     print(trips)
     return render(request, 'triplist.html', {'trips': trips})
-
-# only created to allow manual input to db from form, will be deprecated
-@login_required
-def create_location(request):
-    if request.POST:
-        form = LocationCreateForm(request.POST)
-        print()
-        if form.is_valid():
-            form.save()
-            form = LocationCreateForm()
-    else:
-        form = LocationCreateForm()
-    return render(request, 'createlocation.html', {'form': form})
 
 @login_required
 def create_trip(request):
@@ -104,11 +90,6 @@ def update_profile(request):
 def profile_updated(request):
     return render(request, 'profile_updated.html')
 
-'''
-    #create method __post__ init:
-        data cleaning and/or creating city and country fields 
-'''
-
 @login_required
 def search_location(request, location=Location):
     url = f'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={location}&inputtype=textquery&fields=geometry,formatted_address,name,place_id&key={api_key}'
@@ -142,14 +123,6 @@ def search_location(request, location=Location):
             'error': 'No location found. Please try again.',
         })
     
-    
-"""
-<tr><td><a href...>location</a></td></tr>
-from django.urls import reverse
-reserve("search_location")
-reserve("search_location") + "?location=" + location
-"""
-
 @csrf_exempt
 @require_POST
 def autocomplete(request):
@@ -191,21 +164,6 @@ def autocomplete(request):
     # todo: parse and make table rows table row and table cell; add column with ajax action to handle the checkbox
     # table cell with a link to save to pass that along
     #return render(request, 'location_table_partial.html', {'location_html_table': location_html_table})
-
-#merge arguments to one object
-'''
-def save_location_preview(request, latitude, longitude, city, country, place_name, place_id, api_key):
-    return render(request, 'save_location_preview.html', {
-        'latitude': latitude,
-        'longitude': longitude,
-        'city': city,
-        'country': country,
-        'place_name': place_name,
-        'place_id': place_id,
-        'api_key': api_key,
-    })
-'''
-
 
 #check if location exists, update count if it does; if not, create location
 #create location user object when save_location
@@ -302,15 +260,6 @@ def update_been_to_before(request, pk):
     location_user.save()
     return render(request, 'partial.html', {'location_user': location_user})
 
-'''
-@login_required
-def location_user_edit(request, pk):
-    print("location_user_edit activated !")
-    location_user = LocationUser.objects.get(pk=pk)
-    form = LocationUserForm(instance=location_user)
-    return render(request, '_locationuser_form.html', {'form': form})
-'''
-
 #plotting all locations regardless of user
 def plot_locations(request):
     locations = Location.objects.all()
@@ -348,7 +297,6 @@ def my_locations_plot(request):
     else:
         return redirect('login')  # Redirect to login page if user is not authenticated
 
-
 #heatmap of all locations
 def plot_heatmap(request):
     locations = Location.objects.all()
@@ -357,6 +305,24 @@ def plot_heatmap(request):
     folium.plugins.HeatMap(heat_data, radius=15).add_to(map)
     map = map._repr_html_()
     return render(request, 'heatmap.html', {'map': map})
+
+
+'''
+# only created to allow manual input to db from form, will be deprecated
+@login_required
+def create_location(request):
+    if request.POST:
+        form = LocationCreateForm(request.POST)
+        print()
+        if form.is_valid():
+            form.save()
+            form = LocationCreateForm()
+    else:
+        form = LocationCreateForm()
+    return render(request, 'createlocation.html', {'form': form})
+'''
+
+
 
 '''
 @login_required
@@ -379,4 +345,32 @@ def update_profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+'''
+
+
+
+"""
+<tr><td><a href...>location</a></td></tr>
+from django.urls import reverse
+reserve("search_location")
+reserve("search_location") + "?location=" + location
+"""
+
+
+'''
+def save_location_preview(request, latitude, longitude, city, country, place_name, place_id, api_key):
+    return render(request, 'save_location_preview.html', {
+        'latitude': latitude,
+        'longitude': longitude,
+        'city': city,
+        'country': country,
+        'place_name': place_name,
+        'place_id': place_id,
+        'api_key': api_key,
+    })
+'''
+
+'''
+    #create method __post__ init:
+        data cleaning and/or creating city and country fields 
 '''
