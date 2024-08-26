@@ -32,8 +32,7 @@ urlpatterns = [
     path('locationlist/', views.location_list, name='location_list'),
 
     # for htmx to update user-location; re-visit and re-do/fix
-    path('edit_location_user/', views.edit_location_user_view, name='edit_location_user_view'),
-    path('update_location_user/', views.update_location_user_view, name='update_location_user_view'),
+ 
 
 
     path('subscribe/', views.pricing_page_view, name='pricing_page_view'),
@@ -47,7 +46,10 @@ urlpatterns = [
     path('mylocationsmapped/', views.my_locations_plot, name='my_locations_plot'),
     
     # htmx views to update location user
-    path('my_locations/<pk>/update/', views.location_user_update, name='location_user_update'),
+    #path('my_locations/<pk>/update/', views.location_user_update, name='location_user_update'),
     #path('my_locations/<pk>/edit/', views.location_user_edit, name='location_user_edit'),
+
+    path('my_locations/', views.edit_location_user, name='edit_location_user'),
+    
     
 ]

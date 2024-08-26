@@ -2,37 +2,43 @@
 
 {% load static %}
 
-{% block title %}Location Traveler {% endblock %}
+{% block title %}Location Traveler (User) {% endblock %}
 <!-- based on location user table, only show those locations saved by a user-->
 
 {% block content %}
 
-<h1>My Locations</h1>
+<h1>My Locations List</h1>
 
-<table>
-    {% for location_user in location_users %}
-    <tr>
-        <td>{{ location_user.name }}</td>
-        <td>{{ location_user.location.place_name }}</td>
-        <td>{{ location_user.user.username }}</td>
-        <td>{{ location_user.trip.name }}</td>
-        <td>{{ location_user.been_to_before }}</td>
-        <td>
-            <button hx-get="{% url 'edit_location_user_view' %}?location_user_id={{ location_user.id }}" hx-target="this" hx-swap="outerHTML">Edit</button>
-        </td>
-    </tr>
-    {% empty %}
-    <tr hx-get="{% url 'edit_location_user_view' %}" hx-trigger="load" hx-target="this" hx-swap="outerHTML">
-        <td colspan="6">No data available</td>
-    </tr>
-    {% endfor %}
+<table class="table edit-row">
+    <thead>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Location</th>
+        <th>Trip</th>
+        <th>Been to Before</th>
+        <th>Action</th>
+    </thead>
+    <tbody hxtarget="closest tr" hx-swap="outerHTML">
+        {% for location_user in location_users %}
+        <tr>
+            <td>{{ location_user.name }}</td>
+            <td>{{ location_user.country }}</td>
+            <td>{{ location_user.location.place_name }}</td>
+            <td>{{ location_user.trip.name }}</td>
+            <td>{{ location_user.been_to_before }}</td>
+            <td>
+                <button hx-get="edit_location_user"
+                        hx-target="closest tr" 
+                        hx-swap="outerHTML">Edit</button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No data available</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 
 {% endblock %}
-
-
-<!--
-    <tr id="location-user-row-{{ location_user.pk }}" 
-            hx-get="{% url 'location_user_update' location_user.pk %}">
--->

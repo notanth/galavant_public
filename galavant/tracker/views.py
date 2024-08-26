@@ -210,7 +210,7 @@ def location_saved(request):
     return render(request, 'location_saved.html', {'locations': locations})
 
 
-def edit_location_user_view(request):
+def edit_location_user(request, pk):
     if request.method == 'GET':
         location_user_id = request.GET.get('location_user_id')
         location_user = LocationUser.objects.get(id=location_user_id)
@@ -218,7 +218,8 @@ def edit_location_user_view(request):
     else:
         return HttpResponse(status=400)  # Return a bad request response
 
-def update_location_user_view(request):
+'''
+def update_location_user(request):
     if request.method == 'POST':
         location_user_id = request.POST.get('location_user_id')
         location_user = LocationUser.objects.get(id=location_user_id)
@@ -237,6 +238,7 @@ def update_location_user_view(request):
         return HttpResponse(status=200)  # Return a successful response
     else:
         return HttpResponse(status=400)  # Return a bad request response
+'''
 
 
 #location user list view to be editable
@@ -245,13 +247,16 @@ def location_user_list(request):
     location_users = LocationUser.objects.filter(user=request.user)
     return render(request, 'locationuser_list.html', {'location_users': location_users})
 
+'''
 # should allow for row editing with htmx?
 @login_required
 def location_user_update(request, pk):
     print("location_user_update activated !")
     location_user = LocationUser.objects.get(pk=pk)
     return render(request, '_locationuser_row.html', {'location_user': location_user})
+'''
 
+'''
 #specifically relates to if user updates beentobefore and updates locationuser in db
 @require_POST
 def update_been_to_before(request, pk):
@@ -259,6 +264,7 @@ def update_been_to_before(request, pk):
     location_user.been_to_before = request.POST.get('been_to_before') == 'on'
     location_user.save()
     return render(request, 'partial.html', {'location_user': location_user})
+'''
 
 #plotting all locations regardless of user
 def plot_locations(request):

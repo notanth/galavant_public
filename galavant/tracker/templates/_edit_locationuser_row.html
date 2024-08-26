@@ -1,4 +1,4 @@
-<tr hx-post="{% url 'update_location_user_view' %}" hx-trigger="click" hx-target="closest tr" hx-swap="outerHTML">
+<tr hx-post="{% url 'update_location_user' %}" hx-trigger="click" hx-target="closest tr" hx-swap="outerHTML">
     {% csrf_token %}
     <td><input type="text" name="name" value="{{ location_user.name }}"></td>
     <td>
@@ -9,22 +9,12 @@
         </select>
     </td>
     <td>
-        <select name="user">
-            {% for user in users %}
-            <option value="{{ user.id }}" {% if user.id == location_user.user.id %}selected{% endif %}>{{ user.username }}</option>
-            {% endfor %}
-        </select>
-    </td>
-    <td>
         <select name="trip">
             <option value="">None</option>
             {% for trip in trips %}
             <option value="{{ trip.id }}" {% if trip.id == location_user.trip.id %}selected{% endif %}>{{ trip.name }}</option>
             {% endfor %}
         </select>
-    </td>
-    <td>
-        <input type="checkbox" name="been_to_before" {% if location_user.been_to_before %}checked{% endif %}>
     </td>
     <td><button type="submit">Save</button></td>
 </tr>
