@@ -1,0 +1,12 @@
+{% csrf_token %}
+<tr id="locationuser-{{ location_user.id }}">
+    <td><input type="text" name="name" value="{{ location_user.name }}"></td>
+    <td><input type="text" name="country" value="{{ location_user.country }}"></td>
+    <td><input type="text" name="location" value="{{ location_user.location.place_name }}"></td>
+    <td><input type="text" name="trip" value="{{ location_user.trip.name }}"></td>
+    <td><input type="text" name="been_to_before" value="{{ location_user.been_to_before }}"></td>
+    <td>
+        <button hx-post="{% url 'edit_location_user' location_user.id %}" hx-target="#locationuser-{{ location_user.id }}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Save</button>
+        <button hx-get="{% url 'location_user_list' %}">Cancel</button>
+    </td>
+</tr>

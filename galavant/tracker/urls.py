@@ -49,7 +49,9 @@ urlpatterns = [
     #path('my_locations/<pk>/update/', views.location_user_update, name='location_user_update'),
     #path('my_locations/<pk>/edit/', views.location_user_edit, name='location_user_edit'),
 
-    path('my_locations/', views.edit_location_user, name='edit_location_user'),
+    path('location_list/', views.location_user_list, name='location_user_list'),
+    path('edit_location_user/<pk>/', views.edit_location_user, name='edit_location_user'),
+    path('delete_location_user/<pk>/', views.delete_location_user, name='delete_location_user'),
     
     
 ]

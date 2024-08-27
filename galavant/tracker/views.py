@@ -38,6 +38,7 @@ def default_loggedin(request):
 def pricing_page_view(request):
     return render(request, 'stripe_subscribe.html')
 
+# this shows all locations regardless of user
 @login_required
 def location_list(request):
     locations = Location.objects.all()
@@ -165,6 +166,7 @@ def autocomplete(request):
     # table cell with a link to save to pass that along
     #return render(request, 'location_table_partial.html', {'location_html_table': location_html_table})
 
+
 #check if location exists, update count if it does; if not, create location
 #create location user object when save_location
 @login_required
@@ -209,14 +211,51 @@ def location_saved(request):
     locations = Location.objects.all()
     return render(request, 'location_saved.html', {'locations': locations})
 
-
+@csrf_exempt
+@login_required
 def edit_location_user(request, pk):
-    if request.method == 'GET':
+    location_user = LocationUser.objects.get(pk=pk)
+    if location_user.user != request.user:
+        return redirect('location_user_list')
+    if request.method == 'POST':
+        # Check if the 'name' key exists in the request.POST dictionary
+        if 'name' in request.POST:
+            location_user.name = request.POST['name']
+        if 'country' in request.POST:
+            location_user.country = request.POST['country']
+        if 'location' in request.POST:
+            location_user.location.place_name = request.POST['location']
+        if 'trip' in request.POST:
+            location_user.trip.name = request.POST['trip']
+        if 'been_to_before' in request.POST:
+            location_user.been_to_before = request.POST['been_to_before']
+        location_user.save()
+        return render(request, '_edit_locationuser_row.html', {'location_user': location_user})
+    else:
+        # Render the edit form
+        return render(request, '_edit_location_user.html', {'location_user': location_user})
+    
+@login_required
+def delete_location_user(request, pk):
+    location_user = LocationUser.objects.get(pk=pk)
+    if location_user.user != request.user:
+        return redirect('location_user_list')
+    location_user.delete()
+    return redirect('location_user_list')
+
+
+# old view before using meta ai
+'''
+@login_required
+def edit_location_user(request, pk):
+    location_users = LocationUser.objects.filter(user=request.user)
+    if request.method == 'POST':
         location_user_id = request.GET.get('location_user_id')
         location_user = LocationUser.objects.get(id=location_user_id)
         return render(request, '_edit_locationuser_row.html', {'location_user': location_user})
     else:
         return HttpResponse(status=400)  # Return a bad request response
+'''
 
 '''
 def update_location_user(request):
