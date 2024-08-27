@@ -215,6 +215,7 @@ def location_saved(request):
 @login_required
 def edit_location_user(request, pk):
     location_user = LocationUser.objects.get(pk=pk)
+    print("location user object got from db")
     if location_user.user != request.user:
         return redirect('location_user_list')
     if request.method == 'POST':
@@ -229,6 +230,7 @@ def edit_location_user(request, pk):
             location_user.trip.name = request.POST['trip']
         if 'been_to_before' in request.POST:
             location_user.been_to_before = request.POST['been_to_before']
+        print("saving updated locationuser object")
         location_user.save()
         return render(request, '_edit_locationuser_row.html', {'location_user': location_user})
     else:
@@ -240,6 +242,7 @@ def delete_location_user(request, pk):
     location_user = LocationUser.objects.get(pk=pk)
     if location_user.user != request.user:
         return redirect('location_user_list')
+    print("deleting location user ")
     location_user.delete()
     return redirect('location_user_list')
 

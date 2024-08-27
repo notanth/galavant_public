@@ -5,6 +5,8 @@
     <td>{{ location_user.trip.name }}</td>
     <td>{{ location_user.been_to_before }}</td>
     <td>
-        <button hx-get="{% url 'edit_location_user' location_user.id %}" hx-target="#locationuser-{{ location_user.id }}" hx-swap="outerHTML">Edit</button>
+        <button hx-get="{% url 'edit_location_user' location_user.id %}" 
+                hx-target="#locationuser-{{ location_user.id }}" 
+                hx-swap="outerHTML">Edit</button>
     </td>
 </tr>
