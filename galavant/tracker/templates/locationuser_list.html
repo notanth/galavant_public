@@ -31,7 +31,7 @@
             <td>{{ location_user.been_to_before }}</td>
             <td>
                 <button hx-get="{% url 'edit_location_user' location_user.id %}" 
-                        hx-target="#locationuser-{{ location_user.id }}">Edit</button>
+                        hx-target="closest tr">Edit</button>
                 <button hx-delete="{% url 'delete_location_user' location_user.id %}" 
                         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
                         hx-swap="outerHTML" 

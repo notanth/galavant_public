@@ -219,6 +219,8 @@ def edit_location_user(request, pk):
     if location_user.user != request.user:
         return redirect('location_user_list')
     if request.method == 'POST':
+        print("POST request confirmed, issue is below in request.POST checks")
+        print("request is: ", request)
         # Check if the 'name' key exists in the request.POST dictionary
         if 'name' in request.POST:
             location_user.name = request.POST['name']
@@ -230,6 +232,7 @@ def edit_location_user(request, pk):
             location_user.trip.name = request.POST['trip']
         if 'been_to_before' in request.POST:
             location_user.been_to_before = request.POST['been_to_before']
+            print("been to before is", location_user.been_to_before)
         print("saving updated locationuser object")
         location_user.save()
         return render(request, '_edit_locationuser_row.html', {'location_user': location_user})
