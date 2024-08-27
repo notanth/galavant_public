@@ -15,6 +15,7 @@ from django.views.decorators.http import require_POST
 import googlemaps
 import requests
 import stripe
+import json
 import folium
 from folium.plugins import HeatMap
 from dataclasses import dataclass
@@ -211,33 +212,31 @@ def location_saved(request):
     locations = Location.objects.all()
     return render(request, 'location_saved.html', {'locations': locations})
 
+
 @csrf_exempt
 @login_required
 def edit_location_user(request, pk):
+    print("Request method:", request.method)
+    print("Request body:", request.body)
     location_user = LocationUser.objects.get(pk=pk)
-    print("location user object got from db")
+    print("Location user object got from db")
     if location_user.user != request.user:
         return redirect('location_user_list')
     if request.method == 'POST':
-        print("POST request confirmed, issue is below in request.POST checks")
-        print("request is: ", request)
-        # Check if the 'name' key exists in the request.POST dictionary
-        if 'name' in request.POST:
-            location_user.name = request.POST['name']
-        if 'country' in request.POST:
-            location_user.country = request.POST['country']
-        if 'location' in request.POST:
-            location_user.location.place_name = request.POST['location']
-        if 'trip' in request.POST:
-            location_user.trip.name = request.POST['trip']
-        if 'been_to_before' in request.POST:
-            location_user.been_to_before = request.POST['been_to_before']
-            print("been to before is", location_user.been_to_before)
-        print("saving updated locationuser object")
+        print("POST request confirmed")
+        data = request.POST
+        print("Data:", data)
+        # Update the location_user object with the form data
+        location_user.name = data.get('name')
+        location_user.country = data.get('country')
+        location_user.location.place_name = data.get('location')
+        location_user.trip.name = data.get('trip')
+        location_user.been_to_before = data.get('been_to_before')
+        print("Saving updated location user object")
         location_user.save()
         return render(request, '_edit_locationuser_row.html', {'location_user': location_user})
     else:
-        # Render the edit form
+        print("Request not POST, rendering edit form")
         return render(request, '_edit_location_user.html', {'location_user': location_user})
     
 @login_required
