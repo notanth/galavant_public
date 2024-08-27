@@ -224,6 +224,38 @@ def edit_location_user(request, pk):
         return redirect('location_user_list')
     if request.method == 'POST':
         print("POST request confirmed")
+        editing = False
+        data = request.POST
+        print("Data:", data)
+        # Update the location_user object with the form data
+        location_user.location.country = data.get('country')
+        location_user.location.name = data.get('name')
+        location_user.location.place_name = data.get('location')
+        if location_user.trip is None:
+            location_user.trip = Trip(trip_name=data.get('trip'), user=request.user)
+        else:
+            location_user.trip.trip_name = data.get('trip')
+        location_user.been_to_before = data.get('been_to_before')
+        print("Saving updated location user object")
+        location_user.location.save()
+        location_user.trip.save()
+        location_user.save()
+        return render(request, '_edit_locationuser_row.html', {'location_user': location_user, 'editing': editing})
+    else:
+        editing = True
+        return render(request, '_edit_location_user.html', {'location_user': location_user, 'editing': editing})
+
+#prior version that was being used
+'''
+def edit_location_user(request, pk):
+    print("Request method:", request.method)
+    print("Request body:", request.body)
+    location_user = LocationUser.objects.get(pk=pk)
+    print("Location user object got from db")
+    if location_user.user != request.user:
+        return redirect('location_user_list')
+    if request.method == 'POST':
+        print("POST request confirmed")
         data = request.POST
         print("Data:", data)
         # Update the location_user object with the form data
@@ -238,7 +270,10 @@ def edit_location_user(request, pk):
     else:
         print("Request not POST, rendering edit form")
         return render(request, '_edit_location_user.html', {'location_user': location_user})
-    
+'''
+        
+
+
 @login_required
 def delete_location_user(request, pk):
     location_user = LocationUser.objects.get(pk=pk)
