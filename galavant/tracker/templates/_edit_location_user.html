@@ -4,12 +4,34 @@
           hx-target="#form-container" 
           hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
           hx-swap="innerHTML">
-        <input type="text" name="name" value="{{ location_user.location.name }}">
-        <input type="text" name="country" value="{{ location_user.location.country }}">
-        <input type="text" name="location" value="{{ location_user.location.place_name }}">
-        <input type="text" name="trip" value="{{ location_user.trip.trip_name }}">
-        <input type="text" name="been_to_before" value="{{ location_user.been_to_before }}">
-        <button type="submit">Save</button>
-        <button hx-get="{% url 'location_user_list' %}">Cancel</button>
+        <td><input type="text" name="name" value="{{ location_user.location.name }}"></td>
+        <td><input type="text" name="country" value="{{ location_user.location.country }}"></td>
+        <td><input type="text" name="location" value="{{ location_user.location.place_name }}"></td>
+        <td><input type="text" name="trip" value="{{ location_user.trip.trip_name }}"></td>
+        <td><input type="text" name="been_to_before" value="{{ location_user.been_to_before }}"></td>
+        <td><button type="submit">Save</button></td>
+        <td>
+            <button hx-trigger="click" onclick="this.closest('#form-container').innerHTML = 
+            '{% include '_locationuser_row_display.html' with location_user=location_user %}'">Cancel</button>
+        </td>
     </form>
 </div>
+<!--
+
+<tr id="locationuser-{{ location_user.id }}">
+    <form hx-put="{% url 'edit_location_user' location_user.id %}" 
+          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
+          hx-swap="outerHTML">
+        <td><input type="text" name="country" value="{{ location_user.country }}"></td>
+        <td><input type="text" name="location" value="{{ location_user.location.place_name }}"></td>
+        <td><input type="text" name="trip" value="{{ location_user.trip.name }}"></td>
+        <td><input type="text" name="been_to_before" value="{{ location_user.been_to_before }}"></td>
+        <td>
+            <button type="submit">Save</button>
+        </td>
+        <td>
+            <button hx-get="{% url 'location_user_list' %}">Cancel</button>
+        </td>
+    </form>
+</tr>
+-->
