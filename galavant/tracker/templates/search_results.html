@@ -1,4 +1,6 @@
 
+{% extends "base.html" %}
+
 {% load static %}
 
 {% block title %}Location Details - Search {% endblock %}
@@ -15,37 +17,31 @@
         <th>Place ID</th>
     </tr>
     <tr>
-        <td>{{ latitude }}</td>
-        <td>{{ longitude }}</td>
-        <td>{{ city }}</td>
-        <td>{{ country }}</td>
-        <td>{{ place_name }}</td>
-        <td>{{ place_id }}</td>
+        <td>{{ location_details.latitude }}</td>
+        <td>{{ location_details.longitude }}</td>
+        <td>{{ location_details.city }}</td>
+        <td>{{ location_details.country }}</td>
+        <td>{{ location_details.place_name }}</td>
+        <td>{{ location_details.place_id }}</td>
     </tr>
 </table>
 <div id="map" style="width: 500px; height: 300px;"></div>
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: {{ latitude }}, lng: {{ longitude }}},
+                center: {lat: {{ location_details.latitude }}, lng: {{ location_details.longitude }}},
                 zoom: 10
             });
             var marker = new google.maps.Marker({
-                position: {lat: {{ latitude }}, lng: {{ longitude }}},
+                position: {lat: {{ location_details.latitude }}, lng: {{ location_details.longitude }}},
                 map: map
             });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap"></script>
     
-<form hx-post="/save_location/" hx-target="#search-results">
+<form method="post" action="/save_location/">
     {% csrf_token %}
-    <input type="hidden" name="place_id" value="{{ place_id }}">
-    <input type="hidden" name="place_name" value="{{ place_name }}">
-    <input type="hidden" name="lat" value="{{ latitude }}">
-    <input type="hidden" name="lng" value="{{ longitude }}">
-    <input type="hidden" name="city" value="{{ city }}">
-    <input type="hidden" name="country" value="{{ country }}">
     <button type="submit">Save Location</button>
 </form>
 
