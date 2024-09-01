@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import requests
 import folium
+from folium.plugins import HeatMap
 
 #create constants for api_key & others?
 api_key = config('GOOGLE_API_KEY')
@@ -255,33 +256,14 @@ def edit_location_user(request, pk):
         editing = True
         return render(request, '_edit_location_user.html', {'location_user': location_user, 'editing': editing})
 
-#prior version that was being used
-'''
-def edit_location_user(request, pk):
-    print("Request method:", request.method)
-    print("Request body:", request.body)
+@login_required
+def update_location_user(request, pk):
     location_user = LocationUser.objects.get(pk=pk)
-    print("Location user object got from db")
     if location_user.user != request.user:
         return redirect('location_user_list')
-    if request.method == 'POST':
-        print("POST request confirmed")
-        data = request.POST
-        print("Data:", data)
-        # Update the location_user object with the form data
-        location_user.name = data.get('name')
-        location_user.country = data.get('country')
-        location_user.location.place_name = data.get('location')
-        location_user.trip.name = data.get('trip')
-        location_user.been_to_before = data.get('been_to_before')
-        print("Saving updated location user object")
-        location_user.save()
-        return render(request, '_edit_locationuser_row.html', {'location_user': location_user})
-    else:
-        print("Request not POST, rendering edit form")
-        return render(request, '_edit_location_user.html', {'location_user': location_user})
-'''
-
+    print("deleting location user ")
+    #location_user.delete()
+    return redirect('location_user_list')
 
 
 @login_required
@@ -307,28 +289,6 @@ def edit_location_user(request, pk):
         return HttpResponse(status=400)  # Return a bad request response
 '''
 
-'''
-def update_location_user(request):
-    if request.method == 'POST':
-        location_user_id = request.POST.get('location_user_id')
-        location_user = LocationUser.objects.get(id=location_user_id)
-
-        # Get the changed fields
-        changed_fields = {}
-        for field in ['name', 'location', 'trip', 'been_to_before']:
-            if field in request.POST and request.POST[field] != getattr(location_user, field):
-                changed_fields[field] = request.POST[field]
-
-        # Update the changed fields
-        for field, value in changed_fields.items():
-            setattr(location_user, field, value)
-
-        location_user.save()
-        return HttpResponse(status=200)  # Return a successful response
-    else:
-        return HttpResponse(status=400)  # Return a bad request response
-'''
-
 
 #location user list view to be editable
 @login_required
@@ -345,15 +305,6 @@ def location_user_update(request, pk):
     return render(request, '_locationuser_row.html', {'location_user': location_user})
 '''
 
-'''
-#specifically relates to if user updates beentobefore and updates locationuser in db
-@require_POST
-def update_been_to_before(request, pk):
-    location_user = LocationUser.objects.get(pk=pk)
-    location_user.been_to_before = request.POST.get('been_to_before') == 'on'
-    location_user.save()
-    return render(request, 'partial.html', {'location_user': location_user})
-'''
 
 #plotting all locations regardless of user
 def plot_locations(request):
@@ -403,23 +354,6 @@ def plot_heatmap(request):
 
 
 '''
-# only created to allow manual input to db from form, will be deprecated
-@login_required
-def create_location(request):
-    if request.POST:
-        form = LocationCreateForm(request.POST)
-        print()
-        if form.is_valid():
-            form.save()
-            form = LocationCreateForm()
-    else:
-        form = LocationCreateForm()
-    return render(request, 'createlocation.html', {'form': form})
-'''
-
-
-
-'''
 @login_required
 @transaction.atomic
 def update_profile(request):
@@ -450,20 +384,6 @@ from django.urls import reverse
 reserve("search_location")
 reserve("search_location") + "?location=" + location
 """
-
-
-'''
-def save_location_preview(request, latitude, longitude, city, country, place_name, place_id, api_key):
-    return render(request, 'save_location_preview.html', {
-        'latitude': latitude,
-        'longitude': longitude,
-        'city': city,
-        'country': country,
-        'place_name': place_name,
-        'place_id': place_id,
-        'api_key': api_key,
-    })
-'''
 
 '''
     #create method __post__ init:

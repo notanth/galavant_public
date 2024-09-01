@@ -1,5 +1,7 @@
 /* Global Styles */
 
+
+
 * {
     margin: 0;
     padding: 0;
@@ -128,4 +130,8 @@
   #block-description {
     font-size: 1.2em;
     margin-bottom: 2em;
+  }
+
+  .spacer {
+    margin-bottom: 200px; /* adjust the value to your liking */
   }

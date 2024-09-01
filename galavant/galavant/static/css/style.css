@@ -165,7 +165,9 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
+.spacer {
+  margin-bottom: 40px; /* adjust the value to your liking */
+}
 
 .locations-table th {
   background-color: #333;
