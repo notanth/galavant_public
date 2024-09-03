@@ -1,42 +1,29 @@
-{%  extends "base.html" %}
-
+{% extends "base.html" %}
 {% load static %}
 
-
-
-{% block title %}Locations {% endblock %}
+{% block title %}Locations{% endblock %}
 
 {% block content %}
+<h2>Locations</h2>
 
-    <h2>Locations</h2>
-
-    <table class="locations-table">
-        <thead>
+<table class="">
+    <thead>
+        <tr>
+            <th>Location</th>
+            <th>Place Name</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody hx-target="this" hx-swap="innerHTML">
+        {% for location in locations %}
+            {% include 'location_row_partial.html' with location=location %}
+        {% empty %}
             <tr>
-                <th>Location</th>
-                <th>Place Name</th>
-                <th>Country</th>
-                <th>City</th>
+                <td colspan="5">No locations are available.</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for location in locations %}
-                <tr>
-                    <td>
-                        <a href="{% url 'location_list' %}">
-                            {{ location }}
-                        </a>
-                    </td>
-                    <td>{{ location.place_name }}</td>
-                    <td>{{ location.country }}</td>
-                    <td>{{ location.city }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">No locations are available.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
