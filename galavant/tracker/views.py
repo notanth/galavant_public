@@ -348,7 +348,7 @@ def plot_heatmap(request):
     locations = Location.objects.all()
     map = folium.Map(location=[15, 0], zoom_start=2)
     heat_data = [[location.latitude, location.longitude] for location in locations]
-    folium.plugins.HeatMap(heat_data, radius=15).add_to(map)
+    HeatMap(heat_data, radius=15).add_to(map)
     map = map._repr_html_()
     return render(request, 'heatmap.html', {'map': map})
 
