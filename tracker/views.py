@@ -224,6 +224,12 @@ def location_saved(request):
     return render(request, 'location_saved.html', {'locations': locations})
 
 
+#location user list view to be editable
+@login_required
+def location_user_list(request):
+    location_users = LocationUser.objects.filter(user=request.user)
+    return render(request, 'locationuser_list.html', {'location_users': location_users})
+
 @csrf_exempt
 @login_required
 def edit_location_user(request, pk):
@@ -290,11 +296,7 @@ def edit_location_user(request, pk):
 '''
 
 
-#location user list view to be editable
-@login_required
-def location_user_list(request):
-    location_users = LocationUser.objects.filter(user=request.user)
-    return render(request, 'locationuser_list.html', {'location_users': location_users})
+
 
 '''
 # should allow for row editing with htmx?
