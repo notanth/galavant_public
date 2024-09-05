@@ -1,0 +1,29 @@
+<tr id="location-{{ location.id }}" class="editing">
+    <td>{{ location.id }}</td>
+    <td>
+        <input name="place_name" value="{{ location.place_name }}" form="edit-form-{{ location.id }}">
+    </td>
+    <td>
+        <input name="country" value="{{ location.country }}" form="edit-form-{{ location.id }}">
+    </td>
+    <td>
+        <input name="city" value="{{ location.city }}" form="edit-form-{{ location.id }}">
+    </td>
+    <td>
+        <!-- Updated Cancel Button -->
+        <button class="btn btn-secondary"
+                hx-get="{% url 'location_update' location.id %}"
+                hx-target="#location-{{ location.id }}"
+                hx-swap="outerHTML">
+            Cancel
+        </button>
+        <!-- Include CSRF token in the PUT request -->
+        <form id="edit-form-{{ location.id }}" hx-post="{% url 'location_update' location.id %}" hx-target="#location-{{ location.id }}" hx-swap="outerHTML">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
+        </form>
+    </td>
+</tr>
+

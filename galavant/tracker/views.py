@@ -1,24 +1,15 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from tracker.models import Location, Trip, LocationUser, LocationDetails
-from tracker.forms import LocationCreateForm, TripCreateForm, ProfileUpdateForm, UserUpdateForm, LocationUserForm
-from django.views.generic import ListView
-from django.views import View
-from datetime import datetime
+from tracker.forms import TripCreateForm, ProfileUpdateForm, UserUpdateForm
 from decouple import config
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-import googlemaps
 import requests
-import stripe
-import json
 import folium
 from folium.plugins import HeatMap
-from dataclasses import dataclass
 
 #create constants for api_key & others?
 api_key = config('GOOGLE_API_KEY')
@@ -45,6 +36,26 @@ def location_list(request):
     locations = Location.objects.all()
     print(locations)
     return render(request, 'locationlist_all.html', {'locations': locations})
+
+@login_required
+def location_edit(request, pk):
+    location = get_object_or_404(Location, pk=pk)
+    return render(request, 'location_edit_partial.html', {'location': location})
+
+@login_required
+def location_update(request, pk):
+    location = get_object_or_404(Location, pk=pk)
+    location.place_name = request.POST.get('place_name', location.place_name)
+    location.country = request.POST.get('country', location.country)
+    location.city = request.POST.get('city', location.city)
+    location.save()
+    return render(request, 'location_row_partial.html', {'location': location})
+
+@login_required
+def location_delete(request, pk):
+    location = get_object_or_404(Location, pk=pk)
+    location.delete()
+    return JsonResponse({'success': True})
 
 # trip list specific to logged in user
 @login_required
@@ -124,7 +135,7 @@ def search_location(request, location=Location):
         return render(request, 'search_location.html', {
             'error': 'No location found. Please try again.',
         })
-    
+
 @csrf_exempt
 @require_POST
 def autocomplete(request):
@@ -177,7 +188,7 @@ def save_location(request):
         print("POST request received")
         location_details = LocationDetails(**request.session.get('location_details', {}))
         print("Location details:", location_details.__dict__)
-        
+
         # Get or create a Location instance
         instance, created = Location.objects.get_or_create(
             latitude=location_details.latitude,
@@ -244,33 +255,14 @@ def edit_location_user(request, pk):
         editing = True
         return render(request, '_edit_location_user.html', {'location_user': location_user, 'editing': editing})
 
-#prior version that was being used
-'''
-def edit_location_user(request, pk):
-    print("Request method:", request.method)
-    print("Request body:", request.body)
+@login_required
+def update_location_user(request, pk):
     location_user = LocationUser.objects.get(pk=pk)
-    print("Location user object got from db")
     if location_user.user != request.user:
         return redirect('location_user_list')
-    if request.method == 'POST':
-        print("POST request confirmed")
-        data = request.POST
-        print("Data:", data)
-        # Update the location_user object with the form data
-        location_user.name = data.get('name')
-        location_user.country = data.get('country')
-        location_user.location.place_name = data.get('location')
-        location_user.trip.name = data.get('trip')
-        location_user.been_to_before = data.get('been_to_before')
-        print("Saving updated location user object")
-        location_user.save()
-        return render(request, '_edit_locationuser_row.html', {'location_user': location_user})
-    else:
-        print("Request not POST, rendering edit form")
-        return render(request, '_edit_location_user.html', {'location_user': location_user})
-'''
-        
+    print("deleting location user ")
+    #location_user.delete()
+    return redirect('location_user_list')
 
 
 @login_required
@@ -296,28 +288,6 @@ def edit_location_user(request, pk):
         return HttpResponse(status=400)  # Return a bad request response
 '''
 
-'''
-def update_location_user(request):
-    if request.method == 'POST':
-        location_user_id = request.POST.get('location_user_id')
-        location_user = LocationUser.objects.get(id=location_user_id)
-        
-        # Get the changed fields
-        changed_fields = {}
-        for field in ['name', 'location', 'trip', 'been_to_before']:
-            if field in request.POST and request.POST[field] != getattr(location_user, field):
-                changed_fields[field] = request.POST[field]
-        
-        # Update the changed fields
-        for field, value in changed_fields.items():
-            setattr(location_user, field, value)
-        
-        location_user.save()
-        return HttpResponse(status=200)  # Return a successful response
-    else:
-        return HttpResponse(status=400)  # Return a bad request response
-'''
-
 
 #location user list view to be editable
 @login_required
@@ -334,15 +304,6 @@ def location_user_update(request, pk):
     return render(request, '_locationuser_row.html', {'location_user': location_user})
 '''
 
-'''
-#specifically relates to if user updates beentobefore and updates locationuser in db
-@require_POST
-def update_been_to_before(request, pk):
-    location_user = LocationUser.objects.get(pk=pk)
-    location_user.been_to_before = request.POST.get('been_to_before') == 'on'
-    location_user.save()
-    return render(request, 'partial.html', {'location_user': location_user})
-'''
 
 #plotting all locations regardless of user
 def plot_locations(request):
@@ -363,10 +324,10 @@ def my_locations_plot(request):
     if request.user.is_authenticated:
         # Get locations associated with the logged-in user
         user_locations = LocationUser.objects.filter(user=request.user)
-        
+
         # Get location data from the Location model
         locations = Location.objects.filter(id__in=user_locations.values_list('location_id', flat=True))
-        
+
         # Plot locations
         map = folium.Map(location=[15, 0], zoom_start=2)
         for location in locations:
@@ -376,7 +337,7 @@ def my_locations_plot(request):
                 #popup=location.place_name
             ).add_to(map)
         map = map._repr_html_()
-        
+
         return render(request, 'locationuser_map.html', {'map': map})
     else:
         return redirect('login')  # Redirect to login page if user is not authenticated
@@ -389,23 +350,6 @@ def plot_heatmap(request):
     folium.plugins.HeatMap(heat_data, radius=15).add_to(map)
     map = map._repr_html_()
     return render(request, 'heatmap.html', {'map': map})
-
-
-'''
-# only created to allow manual input to db from form, will be deprecated
-@login_required
-def create_location(request):
-    if request.POST:
-        form = LocationCreateForm(request.POST)
-        print()
-        if form.is_valid():
-            form.save()
-            form = LocationCreateForm()
-    else:
-        form = LocationCreateForm()
-    return render(request, 'createlocation.html', {'form': form})
-'''
-
 
 
 '''
@@ -440,21 +384,7 @@ reserve("search_location")
 reserve("search_location") + "?location=" + location
 """
 
-
-'''
-def save_location_preview(request, latitude, longitude, city, country, place_name, place_id, api_key):
-    return render(request, 'save_location_preview.html', {
-        'latitude': latitude,
-        'longitude': longitude,
-        'city': city,
-        'country': country,
-        'place_name': place_name,
-        'place_id': place_id,
-        'api_key': api_key,
-    })
-'''
-
 '''
     #create method __post__ init:
-        data cleaning and/or creating city and country fields 
+        data cleaning and/or creating city and country fields
 '''

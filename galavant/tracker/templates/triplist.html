@@ -1,4 +1,4 @@
-<!-- should be able to delete with addition of locationuser_list.html  -->
+<!-- potential to delete with addition of locationuser_list.html  IF made possible to create a trip there -->
 
 
 {%  extends "base.html" %}
@@ -19,5 +19,15 @@
     {% empty %}
       <p>No trips are available.</p>
     {% endfor %}
+
+    <!-- Spacer -->
+    <p></p>
+    <div class="spacer"></div>
+    <p>Create a new trip below:</p>
+
+    <!-- Create Trip section -->
+    <div class="create-trip">
+        <a href="{% url 'create_trip' %}" class="btn btn-primary">Create New Trip →</a>
+    </div>
 
 {% endblock %}

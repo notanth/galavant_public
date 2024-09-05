@@ -1,0 +1,21 @@
+<tr id="location-{{ location.id }}">
+    <td>{{ location.id }}</td>
+    <td>{{ location.place_name }}</td>
+    <td>{{ location.country }}</td>
+    <td>{{ location.city }}</td>
+    <td>
+        <button class="btn btn-primary"
+                hx-get="{% url 'location_edit' location.id %}"
+                hx-target="#location-{{ location.id }}"
+                hx-swap="outerHTML">
+            Edit
+        </button>
+        <form hx-post="{% url 'location_delete' location.id %}" hx-target="#location-{{ location.id }}" hx-swap="delete" hx-confirm="Are you sure you want to delete this location?">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                Delete
+            </button>
+        </form>
+    </td>
+</tr>
+
