@@ -1,0 +1,1 @@
+web: gunicorn galavant.wsgi --log-file -
