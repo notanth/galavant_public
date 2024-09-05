@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['galavant-v0-643f022d92d3.herokuapp.com']
+ALLOWED_HOSTS = ['galavant-v0-643f022d92d3.herokuapp.com','galavant.world']
 
 # Application definition
 
@@ -50,8 +50,6 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.apple',
     'decouple',
     'debug_toolbar',
-    'crispy_forms',
-    "crispy_bootstrap4",
     # own
     'tracker',
 ]
