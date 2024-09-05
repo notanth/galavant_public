@@ -180,7 +180,7 @@ USE_TZ = True
 
 # supposedly required for CSS (& JS?) imports ; maybe others along w STATIC ROUTE
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'galavant/static')
 ]
 
 STATIC_URL = 'static/'
