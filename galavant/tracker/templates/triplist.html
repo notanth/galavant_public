@@ -1,0 +1,33 @@
+<!-- potential to delete with addition of locationuser_list.html  IF made possible to create a trip there -->
+
+
+{%  extends "base.html" %}
+
+{% block title %}Trips{% endblock %}
+
+{% block content %}
+
+
+    <h3>Trips</h3>
+    {% for trip in trips %}
+        <div class="trip">
+            <a href="{% url 'trip_list' %}">
+                {{ trip.trip_name }}
+            </a>
+            
+     </div>
+    {% empty %}
+      <p>No trips are available.</p>
+    {% endfor %}
+
+    <!-- Spacer -->
+    <p></p>
+    <div class="spacer"></div>
+    <p>Create a new trip below:</p>
+
+    <!-- Create Trip section -->
+    <div class="create-trip">
+        <a href="{% url 'create_trip' %}" class="btn btn-primary">Create New Trip →</a>
+    </div>
+
+{% endblock %}

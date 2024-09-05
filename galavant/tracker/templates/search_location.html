@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_head %}
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
+{% endblock %}
+
+{% block title %}Locations {% endblock %}
+
+{% block content %}
+
+  <h2>Search for a location below!</h2>
+
+  <input class="form-control" type="search"
+    id="location" name="location" placeholder="Enter a location"
+    hx-post="{% url 'autocomplete' %}"
+    hx-trigger="input changed delay:500ms, search"
+    hx-target="#search-results"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+  
+  <table id="search-results">
+  </table>
+  
+  
+
+   <!--
+  <table id="search-results">
+    {{ location_options|length }}
+    {% for option in location_options %}
+      <tr>
+        {% for item in option %}
+          <td>{{ item }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+  -->
+{% endblock %}

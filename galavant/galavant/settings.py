@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
-#from dj_database_url import parse as db_url
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,18 +45,21 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    #'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.google',
     #'allauth.socialaccount.providers.facebook',
     #'allauth.socialaccount.providers.twitter',
     #'allauth.socialaccount.providers.apple',
-
     'decouple',
+    'debug_toolbar',
+    'crispy_forms',
+    "crispy_bootstrap4",
     # own
     'tracker',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,6 +68,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 3rd party
     'allauth.account.middleware.AccountMiddleware',
+    # may need to re-add this below
+    #'htmx.middleware.HTMXMiddleware',
+
 ]
 
 SITE_ID = 1
@@ -122,15 +128,12 @@ AUTHENTICATION_BACKENDS = [
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+#DATABASE_URL = f"postgres://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_HOST')}:{config('DB_PORT')}/{config('DB_NAME')}"
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'galavantdb',
-        'USER': 'anthonyc',
-        'PASSWORD': 'KbA3#8L!J4E',
-        "HOST": "localhost",
-        "PORT": "",
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 
@@ -152,6 +155,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+'''
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
+
+'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -180,13 +191,12 @@ STATIC_URL = 'static/'
 # supposedly required for CSS (& JS?) imports ; maybe others
 STATIC_ROOT: str = os.path.join(BASE_DIR, 'static_cdn')
 
-#per decouple docs
-#SECRET_KEY = config('SECRET_KEY')
-#DEBUG = config('DEBUG', default=False, cast=bool)
 #EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 #EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 
 #RECAPTCHA_KEY
 

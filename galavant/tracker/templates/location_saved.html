@@ -1,0 +1,16 @@
+{%  extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Locations {% endblock %}
+
+{% block content %}
+
+<h1>Location Saved Successfully!</h1>
+<p>Your location has been saved successfully. You can search for another location.</p>
+<form method="get" action="{% url 'search_location' %}">
+    <button type="submit">Search Location</button>
+</form>
+
+   
+{% endblock %}

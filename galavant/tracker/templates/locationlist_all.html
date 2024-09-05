@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Locations{% endblock %}
+
+{% block content %}
+<h2>Locations</h2>
+
+<table class="">
+    <thead>
+        <tr>
+            <th>Location</th>
+            <th>Place Name</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody hx-target="this" hx-swap="innerHTML">
+        {% for location in locations %}
+            {% include 'location_row_partial.html' with location=location %}
+        {% empty %}
+            <tr>
+                <td colspan="5">No locations are available.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

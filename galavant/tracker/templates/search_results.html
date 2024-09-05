@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Location Details - Search {% endblock %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>City</th>
+        <th>Country</th>
+        <th>Place Name</th>
+        <th>Place ID</th>
+    </tr>
+    <tr>
+        <td>{{ location_details.latitude }}</td>
+        <td>{{ location_details.longitude }}</td>
+        <td>{{ location_details.city }}</td>
+        <td>{{ location_details.country }}</td>
+        <td>{{ location_details.place_name }}</td>
+        <td>{{ location_details.place_id }}</td>
+    </tr>
+</table>
+<div id="map" style="width: 500px; height: 300px;"></div>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: {{ location_details.latitude }}, lng: {{ location_details.longitude }}},
+                zoom: 10
+            });
+            var marker = new google.maps.Marker({
+                position: {lat: {{ location_details.latitude }}, lng: {{ location_details.longitude }}},
+                map: map
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap"></script>
+    
+<form method="post" action="/save_location/">
+    {% csrf_token %}
+    <button type="submit">Save Location</button>
+</form>
+
+{% endblock %}
