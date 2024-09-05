@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['galavant-v0-643f022d92d3.herokuapp.com','galavant.world']
+ALLOWED_HOSTS = ['galavant-v0-643f022d92d3.herokuapp.com','galavant.world','www.galavant.world']
 
 # Application definition
 
