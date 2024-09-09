@@ -67,7 +67,8 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     # may need to re-add this below
     #'htmx.middleware.HTMXMiddleware',
-
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 SITE_ID = 1
@@ -132,6 +133,7 @@ DATABASES = {
     )
 }
 
+# added to pull db in prod using heroku env
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
@@ -153,15 +155,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-'''
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
-
-'''
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -176,26 +169,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# supposedly required for CSS (& JS?) imports ; maybe others along w STATIC ROUTE
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'galavant/static')
 ]
-
-STATIC_URL = 'static/'
-
-
-# supposedly required for CSS (& JS?) imports ; maybe others
-STATIC_ROOT: str = os.path.join(BASE_DIR, 'static_cdn')
+STATIC_HOST = config("DJANGO_STATIC_HOST", default="")
+STATIC_URL = STATIC_HOST + "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-
 #EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 #EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
