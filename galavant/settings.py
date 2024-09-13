@@ -28,7 +28,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1','galavant-v0-643f022d92d3.herokuapp.com','galavant.world','www.galavant.world']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
+#ALLOWED_HOSTS = ['127.0.0.1','galavant-v0-643f022d92d3.herokuapp.com','galavant.world','www.galavant.world']
 
 # Application definition
 
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.apple',
     'decouple',
     'debug_toolbar',
+    'sendgrid',
     # own
     'tracker',
 ]
@@ -179,8 +181,15 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-#EMAIL_HOST = config('EMAIL_HOST', default='localhost')
-#EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD= config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
