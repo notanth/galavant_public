@@ -223,12 +223,13 @@ def location_saved(request):
     locations = Location.objects.all()
     return render(request, 'location_saved.html', {'locations': locations})
 
+
+@csrf_exempt
 @login_required
 def edit_location_user(request, pk):
     print("Request method:", request.method)
     print("Request body:", request.body)
     location_user = LocationUser.objects.get(pk=pk)
-    # add trips look up; ajax put request to update on select 
     print("Location user object got from db")
     if location_user.user != request.user:
         return redirect('location_user_list')
@@ -270,8 +271,8 @@ def delete_location_user(request, pk):
     location_user = LocationUser.objects.get(pk=pk)
     if location_user.user != request.user:
         return redirect('location_user_list')
-    location_user.delete()
     print("deleting location user ")
+    location_user.delete()
     return redirect('location_user_list')
 
 
@@ -347,7 +348,7 @@ def plot_heatmap(request):
     locations = Location.objects.all()
     map = folium.Map(location=[15, 0], zoom_start=2)
     heat_data = [[location.latitude, location.longitude] for location in locations]
-    HeatMap(heat_data, radius=15).add_to(map)
+    folium.plugins.HeatMap(heat_data, radius=15).add_to(map)
     map = map._repr_html_()
     return render(request, 'heatmap.html', {'map': map})
 

@@ -28,8 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1','galavant-v0-643f022d92d3.herokuapp.com','galavant.world','www.galavant.world']
 
 # Application definition
 
@@ -51,8 +50,6 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.apple',
     'decouple',
     'debug_toolbar',
-    'crispy_forms',
-    "crispy_bootstrap4",
     # own
     'tracker',
 ]
@@ -70,12 +67,10 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     # may need to re-add this below
     #'htmx.middleware.HTMXMiddleware',
-
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 SITE_ID = 1
-
-
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 LOGIN_REDIRECT_URL = '/'
@@ -128,6 +123,7 @@ AUTHENTICATION_BACKENDS = [
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+#for reference when attempting to use digitalocean
 #DATABASE_URL = f"postgres://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_HOST')}:{config('DB_PORT')}/{config('DB_NAME')}"
 
 DATABASES = {
@@ -136,6 +132,9 @@ DATABASES = {
     )
 }
 
+# added to pull db in prod using heroku env
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -155,15 +154,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-'''
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
-
-'''
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -175,37 +165,23 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-
-# supposedly required for CSS (& JS?) imports ; maybe others along w STATIC ROUTE
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'galavant/static')
+    os.path.join(BASE_DIR, 'galavant/static'),
 ]
-
-STATIC_URL = 'static/'
-
-
-# supposedly required for CSS (& JS?) imports ; maybe others
-STATIC_ROOT: str = os.path.join(BASE_DIR, 'static_cdn')
-
-#EMAIL_HOST = config('EMAIL_HOST', default='localhost')
-#EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+STATIC_HOST = config("DJANGO_STATIC_HOST", default="")
+STATIC_URL = STATIC_HOST + "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-
-#RECAPTCHA_KEY
-
-#PADDLE_KEY or other payments API
-
-#**OTHER** APIKEY = ""
-#OTHER SECRET
+#EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+#EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

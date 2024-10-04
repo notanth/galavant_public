@@ -12,9 +12,7 @@ distlib==0.3.8
 dj-database-url==2.2.0
 Django==4.2.13
 django-allauth==0.63.3
-django-crispy-forms==2.3
 django-debug-toolbar==4.4.6
-django-google-maps==0.13.0
 filelock==3.15.4
 googlemaps==4.10.0
 identify==2.5.36
@@ -25,7 +23,6 @@ platformdirs==4.2.2
 pre-commit==3.7.1
 psycopg2-binary==2.9.9
 pycparser==2.22
-PyGithub==2.3.0
 PyJWT==2.8.0
 PyNaCl==1.5.0
 python-decouple==3.8
@@ -42,3 +39,5 @@ virtualenv==20.26.3
 wrapt==1.16.0
 zope.interface==6.4.post2
 gunicorn
+folium
+whitenoise
